@@ -1,9 +1,9 @@
-CREATE DATABASE videothek;
+CREATE DATABASE video_library;
 
-USE videothek;
+USE video_library;
 
 CREATE TABLE TVideos (
-	VidNumber INT NOT NULL,
+    VidNumber INT NOT NULL,
     VidTitle VARCHAR(64),
     VidDuration TIME,
     VidCategory VARCHAR(64),
