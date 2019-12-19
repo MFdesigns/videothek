@@ -16,7 +16,7 @@ CREATE TABLE TVideos (
 );
 
 CREATE TABLE TPlaces(
-	PlaceONRP INT NOT NULL,
+    PlaceONRP INT NOT NULL,
     PlaceStreet INT,
     PlaceNumber INT,
     PlaceCity VARCHAR(64),
@@ -24,7 +24,7 @@ CREATE TABLE TPlaces(
 );
 
 CREATE TABLE TCustomers (
-	CustId INT NOT NULL,
+    CustId INT NOT NULL,
     CustTitle ENUM('Herr', 'Frau'),
     CustName VARCHAR(128),
     CustSurname VARCHAR(128),
@@ -36,7 +36,7 @@ CREATE TABLE TCustomers (
 );
 
 CREATE TABLE TLendings (
-	LendId INT NOT NULL,
+    LendId INT NOT NULL,
     LendFrom DATE,
     LendUntill DATE,
     VidNumber INT,
