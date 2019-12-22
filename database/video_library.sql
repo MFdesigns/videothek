@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS video_library;
 CREATE DATABASE video_library;
 
 USE video_library;
@@ -15,7 +16,7 @@ CREATE TABLE TVideos (
     PRIMARY KEY (VidNumber)
 );
 
-CREATE TABLE TPlaces(
+CREATE TABLE TPlaces (
     PlaceONRP INT NOT NULL,
     PlaceStreet INT,
     PlaceNumber INT,
@@ -31,8 +32,7 @@ CREATE TABLE TCustomers (
     CustBirthday DATE,
     CustPhoneNumber INT,
     PlaceONRP INT,
-    PRIMARY KEY (CustId),
-    FOREIGN KEY (PlaceONRP) REFERENCES TPlaces (PlaceONRP)
+    PRIMARY KEY (CustId)
 );
 
 CREATE TABLE TLendings (
@@ -41,7 +41,5 @@ CREATE TABLE TLendings (
     LendUntill DATE,
     VidNumber INT,
     CustId INT,
-    PRIMARY KEY (LendId),
-    FOREIGN KEY (CustId) REFERENCES TCustomers (CustId),
-    FOREIGN KEY (VidNumber) REFERENCES TVideos (VidNumber)
+    PRIMARY KEY (LendId)
 );
