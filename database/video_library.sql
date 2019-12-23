@@ -8,7 +8,7 @@ CREATE TABLE TVideos (
     VidTitle VARCHAR(64),
     VidDuration TIME,
     VidCategory VARCHAR(64),
-    VidYear DATE,
+    VidYear YEAR,
     VidAgeRating INT,
     VidPricePerDay FLOAT,
     VidPrice FLOAT,
