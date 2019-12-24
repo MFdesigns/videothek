@@ -18,8 +18,6 @@ CREATE TABLE TVideos (
 
 CREATE TABLE TPlaces (
     PlaceONRP INT NOT NULL,
-    PlaceStreet INT,
-    PlaceNumber INT,
     PlaceCity VARCHAR(64),
     PRIMARY KEY (PlaceONRP)
 );
@@ -31,6 +29,8 @@ CREATE TABLE TCustomers (
     CustSurname VARCHAR(128),
     CustBirthday DATE,
     CustPhoneNumber INT,
+    CustStreet VARCHAR(128),
+    CustStreetNumber VARCHAR(16),
     PlaceONRP INT,
     PRIMARY KEY (CustId)
 );
