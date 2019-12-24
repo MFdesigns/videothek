@@ -1,7 +1,16 @@
 USE video_library;
 
 -- Video test data
-INSERT INTO TVideos VALUES (1035, 'Star Wars: The Rise of Skywalker', 141, 'Science-Fiction', '2019', 12, 5.00, 25.00, 3);
+INSERT INTO TVideos VALUES (1035, 'Star Wars: The Rise of Skywalker', '02:21:00', 'Science-Fiction', '2019', 12, 5.00, 25.00, 3);
+INSERT INTO TVideos VALUES (750, 'Titanic', '03:15:00', 'Romance', '1997', 12, 3.50, 18.00, 7);
+INSERT INTO TVideos VALUES (1001, 'Godzilla: King of the Monsters', '02:12:00', 'Science-Fiction', '2019', 12, 5.00, 25.00, 5);
+INSERT INTO TVideos VALUES (1037, 'Cats', '01:42:00', 'Musical', '2019', 6, 5.00, 25.00, 2);
+INSERT INTO TVideos VALUES (988, 'Tron: Legacy', '02:05:00', 'Science-Fiction', '2010', 12, 4.00, 20.00, 3);
+INSERT INTO TVideos VALUES (991, 'Invictus', '02:14:00', 'Drama', '2009', 12, 3.50, 18.00, 4);
+INSERT INTO TVideos VALUES (1013, 'Harry Potter and the Goblet of Fire', '02:37:00', 'Fantasy', '2005', 12, 4.00, 20.00, 9);
+INSERT INTO TVideos VALUES (1025, 'Ghostbusters', '01:45:00', 'Science-Fiction', '2016', 12, 5.00, 25.00, 2);
+INSERT INTO TVideos VALUES (1009, 'Cars', '01:56:00', 'Comedy', '2006', 0, 3.50, 18.00, 11);
+INSERT INTO TVideos VALUES (1017, 'John Wick: Chapter 2', '02:02:00', 'Action', '2017', 18, 5.00, 25.00, 6);
 
 -- Places test data
 INSERT INTO TPlaces VALUES (4805, 'Frauenfeld');
@@ -20,3 +29,15 @@ INSERT INTO TCustomers VALUES (958, 'Frau', 'Yvonne ', 'Klug', '1989-03-23', '07
 INSERT INTO TCustomers VALUES (467, 'Herr', 'Dario ', 'Romandini', '2003-03-21', '0754218724', 'Steig', '4a', 4610);
 INSERT INTO TCustomers VALUES (397, 'Herr', 'Michel', 'Fäh', '1989-02-23', '0789669996', 'Zürcherstrasse', '16', 4805);
 INSERT INTO TCustomers VALUES (125, 'Herr', 'Julian', 'Vogt', '2002-08-20', '0774036733', 'Niederhof', '13', 5408);
+
+-- Lending test data
+INSERT INTO TLendings VALUES (112, '2019-12-26', '2019-12-28', 1035, 397);
+INSERT INTO TLendings VALUES (115, '2019-12-13', '2020-01-13', 1013, 234);
+INSERT INTO TLendings VALUES (140, '2019-11-27', '2019-12-26', 1009, 234);
+INSERT INTO TLendings VALUES (127, '2019-12-28', '2019-12-29', 1009, 125);
+INSERT INTO TLendings VALUES (122, '2019-12-20', '2019-12-20', 1017, 935);
+INSERT INTO TLendings VALUES (119, '2019-10-12', '2019-10-17', 988, 564);
+INSERT INTO TLendings VALUES (130, '2019-12-15', '2019-12-17', 991,958);
+INSERT INTO TLendings VALUES (133, '2019-11-28', '2019-12-04', 1001, 467);
+INSERT INTO TLendings VALUES (139, '2019-12-02', '2019-12-12', 750, 735);
+INSERT INTO TLendings VALUES (142, '2019-12-18', '2019-12-19', 1017, 564);
