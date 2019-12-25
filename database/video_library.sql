@@ -41,7 +41,7 @@ CREATE TABLE TCustomers (
 CREATE TABLE TLendings (
     LendId INT NOT NULL,
     LendFrom DATE,
-    LendUntill DATE,
+    LendUntil DATE,
     VidNumber INT,
     CustId INT,
     PRIMARY KEY (LendId)
