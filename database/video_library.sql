@@ -3,6 +3,9 @@ CREATE DATABASE video_library;
 
 USE video_library;
 
+CREATE USER IF NOT EXISTS 'VidLibUser' IDENTIFIED BY 'oV1OB%7d';
+GRANT SELECT, INSERT, UPDATE ON *.* TO 'VidLibUser';
+
 CREATE TABLE TVideos (
     VidNumber INT NOT NULL,
     VidTitle VARCHAR(64),
