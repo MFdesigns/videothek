@@ -16,12 +16,14 @@ CREATE TABLE TVideos (
     VidPricePerDay FLOAT,
     VidPrice FLOAT,
     VidInventory INT,
+    VidDeleted BOOL,
     PRIMARY KEY (VidNumber)
 );
 
 CREATE TABLE TPlaces (
     PlaceONRP INT NOT NULL,
     PlaceCity VARCHAR(64),
+    PlaceDeleted BOOL,
     PRIMARY KEY (PlaceONRP)
 );
 
@@ -34,6 +36,7 @@ CREATE TABLE TCustomers (
     CustPhoneNumber INT,
     CustStreet VARCHAR(128),
     CustStreetNumber VARCHAR(16),
+    CustDeleted BOOL,
     PlaceONRP INT,
     PRIMARY KEY (CustId)
 );
@@ -42,6 +45,7 @@ CREATE TABLE TLendings (
     LendId INT NOT NULL,
     LendFrom DATE,
     LendUntil DATE,
+    LendDeleted BOOL,
     VidNumber INT,
     CustId INT,
     PRIMARY KEY (LendId)
