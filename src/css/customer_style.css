@@ -5,13 +5,13 @@
 }
 
 :root {
+  /* Colors */
   --accent-color: #2935CE;
+  --almost-white: #F3F3F3;
+  /* Layout */
+  --page-width: 1000px;
 }
 
-@font-face {
-  font-family: "title-regular";
-  src: url("../res/fonts/montserrat_regular.otf");
-}
 @font-face {
   font-family: "title-bold";
   src: url("../res/fonts/montserrat_bold.otf");
@@ -38,10 +38,33 @@
   font-size: 16px;
 }
 
+.title--dark {
+  font-family: "title-bold";
+  color: black;
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+}
+.title--light {
+  font-family: "title-bold";
+  color: white;
+  font-size: 25px;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.title-lg--accent {
+  font-family: "title-bold";
+  color: var(--accent-color);
+  font-size: 40px;
+  font-style: normal;
+  font-weight: normal;
+}
+
 
 body {
   display: grid;
-  grid-template-columns: 1fr 100px 1fr;
+  grid-template-columns: 1fr var(--page-width) 1fr;
   grid-template-rows: auto 1fr 50px;
   grid-template-areas:
   "header header  header"
@@ -52,18 +75,21 @@ body {
 }
 
 header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   grid-area: header;
   background-color: var(--accent-color);
 }
 
+.header-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: var(--page-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .page-title {
-  font-family: "title-bold";
-  color: white;
-  font-size: 25px;
-  margin: 0 20px 0 20px;
+  margin: 0 20px 0 0;
 }
 
 .nav-list {
@@ -110,6 +136,48 @@ header {
 
 main {
   grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto 1fr 1fr;
+  grid-template-areas:
+  "subheader  subheader"
+  "list       info"
+  "list       lendings"
+  ;
+  gap: 20px;
+}
+
+.page-subheader {
+  grid-area: subheader;
+  padding: 20px 0 0 0;
+}
+
+.card-title {
+  margin: 0 0 10px 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background-color: var(--almost-white);
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.customer-list {
+  grid-area: list;
+}
+
+.customer-infos {
+  grid-area: infos;
+}
+
+.customer-lendings {
+  grid-area: lendings;
 }
 
 footer {
