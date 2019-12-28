@@ -4,38 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Videothek | <?php echo $pageTitle; ?></title>
-  <script src="/js/indexScript.js" defer></script>
+  <link rel="stylesheet" href="/css/customer_style.css">
 </head>
 <body>
 
-  <h1>Kunden</h1>
+  <!-- Header -->
+  <header>
+    <h1 class="page-title">Videothek</h1>
+    <!-- Page navigation -->
+    <nav class="nav">
+      <ul class="nav-list">
+        <li>
+          <a class="nav-list__item nav-list__item--selected text-sm--light" href="/kunden">
+            <img class="nav-list__item-icon" src="/res/icons/placeholder_icon.svg"/>
+            <span class="nav-list__item-text">Kunden</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__item text-sm--light" href="#">
+            <img class="nav-list__item-icon" src="/res/icons/placeholder_icon.svg"/>
+            <span class="nav-list__item-text">Videos</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-list__item text-sm--light" href="#">
+            <img class="nav-list__item-icon"  src="/res/icons/placeholder_icon.svg"/>
+            <span class="nav-list__item-text">Ausleihen</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-  <table>
-    <tr>
-      <th>KundenNr</th>
-      <th>Vorname</th>
-      <th>Nachname</th>
-    </tr>
-    <?php
-    if(isset($customerList)):
-      foreach ($customerList as $customer):
-      ?>
-    <tr>
-      <td><?php echo $customer["CustId"]; ?></td>
-      <td><?php echo $customer["CustName"]; ?></td>
-      <td><?php echo $customer["CustSurname"]; ?></td>
-    </tr>
-      <?php endforeach; ?>
-    <?php else: ?>
-    <tr>
-      <td>Keine Kunden</td>
-    </tr>
-    <?php endif; ?>
-  </table>
+  <main>
+    <h2>Kunden</h2>
+  </main>
 
-  <button id="test-button">Test</button>
-
-  <p id="test-output"></p>
+  <footer>
+    <p>Footer</p>
+  </footer>
 
 </body>
 </html>
