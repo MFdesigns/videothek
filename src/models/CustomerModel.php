@@ -12,11 +12,11 @@ class CustomerModel {
   }
 
   /**
-   * Returns a list of customers
+   * Returns a list of all customers
    *
    * @param string $orderBy valid customer column
-   * @param string $ascending ASC or DESC
-   * @return void
+   * @param string $direction ASC or DESC
+   * @return PDOStatement
    */
   function getList($orderBy = "CustId", $direction = "ASC") {
     $sql = "SELECT CustId, CustName, CustSurname FROM TCustomers WHERE CustDeleted = false ORDER BY $orderBy $direction";
@@ -24,17 +24,30 @@ class CustomerModel {
     return $result;
   }
 
+  /**
+   * Searches for the keyword in customers table
+   *
+   * @param string $keyword
+   * @param string $orderBy
+   * @param string $direction
+   * @return PDOStatement
+   */
   function search($keyword, $orderBy = "CustId", $direction = "ASC") {
     $sql = "SELECT CustId, CustName, CustSurname FROM TCustomers WHERE CustDeleted = false AND CustId LIKE '$keyword' OR CustName LIKE '%$keyword%' OR CustSurname LIKE '%$keyword%' ORDER BY $orderBy $direction";
     $result = $this->conn->query($sql);
     return $result;
   }
 
+  /**
+   * Returns an associated array with the customer data
+   *
+   * @param int $custId
+   * @return string[]
+   */
   function getById($custId) {
-    $sql = "SELECT * FROM TCustomers WHERE CustId = $custId AND CustDeleted = false";
+    $sql = "SELECT CustId, CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, TPlaces.PlaceONRP, PlaceCity FROM TCustomers, TPlaces WHERE TCustomers.PlaceONRP = TPlaces.PlaceONRP AND CustId = $custId AND CustDeleted = false";
     $result = $this->conn->query($sql);
-
-    return $result;
+    return $result->fetch(PDO::FETCH_ASSOC);
   }
 
 }

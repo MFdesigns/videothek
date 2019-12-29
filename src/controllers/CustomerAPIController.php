@@ -10,22 +10,27 @@ class CustomerAPIController {
   function __construct($url, $method) {
     $this->model = new CustomerModel();
 
-    // Check if there is a second url parameter
-    if (array_key_exists(0, $url)) {
-      if ($url[0] === "search") {
-        $this->searchCustomers();
-      } else if(preg_match("/^[0-9]+$/", $custId)) {
-        pageNotFound();
-      } else {
-        pageNotFound();
-      }
+    $requestType = isset($url[0]) ? $url[0] : NULL;
+
+    // Determines what kind of customer data the user requests
+    $validId = "/^[0-9]+$/";
+    if (preg_match($validId, $requestType)) {
+      $this->getCustomerById($requestType);
+    } else if ($requestType === "search") {
+      $this->searchCustomers();
     } else {
       $this->getCustomerList();
     }
   }
 
+  /**
+   * Checks if the paramters to order the data are valid
+   * if not returns default order params
+   *
+   * @return string[]
+   */
   function validateOrderParams() {
-    // Query parameter to DB Attribute lookup table
+    // URL parameter to DB attribute lookup table
     $orderAttrLookup = [
       "id" => "CustId",
       "name" => "CustName",
@@ -79,7 +84,7 @@ class CustomerAPIController {
 
   function searchCustomers() {
     $validKeyword = "/^[a-zA-ZÀ-ÿä-ü\w]+$/";
-    if ($_GET["keyword"] && preg_match($validKeyword, $_GET["keyword"])) {
+    if (isset($_GET["keyword"]) && preg_match($validKeyword, $_GET["keyword"])) {
 
       $orderParams = $this->validateOrderParams();
 
@@ -106,6 +111,30 @@ class CustomerAPIController {
       http_response_code(400);
       die();
     }
+  }
+
+  function getCustomerById($id) {
+    $result = $this->model->getById($id);
+
+    if (!$result) {
+      http_response_code(404);
+      die();
+    }
+
+    // Translate DB attribute names into API naming schema
+    $customer["id"] = $result["CustId"];
+    $customer["title"] = $result["CustTitle"];
+    $customer["name"] = $result["CustName"];
+    $customer["surname"] = $result["CustSurname"];
+    $customer["birthday"] = $result["CustBirthday"];
+    $customer["phone"] = $result["CustPhoneNumber"];
+    $customer["street"] = $result["CustStreet"];
+    $customer["streetNumber"] = $result["CustStreetNumber"];
+    $customer["onrp"] = $result["PlaceONRP"];
+    $customer["city"] = $result["PlaceCity"];
+
+    header('Content-Type: text/json; charset=UTF-8');
+    echo json_encode($customer);
   }
 }
 
