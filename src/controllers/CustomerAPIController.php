@@ -10,13 +10,21 @@ class CustomerAPIController {
   function __construct($url, $method) {
     $this->model = new CustomerModel();
 
-    $requestType = isset($url[0]) ? $url[0] : NULL;
+    $requesRoute = isset($url[0]) ? $url[0] : NULL;
 
     // Determines what kind of customer data the user requests
     $validId = "/^[0-9]+$/";
-    if (preg_match($validId, $requestType)) {
-      $this->getCustomerById($requestType);
-    } else if ($requestType === "search") {
+    if (preg_match($validId, $requesRoute)) {
+      switch ($method) {
+        case "GET":
+          $this->getCustomerById($requesRoute);
+        break;
+
+        case "PUT":
+          $this->updateCustomerById($requesRoute);
+        break;
+      }
+    } else if ($requesRoute === "search" && $method === "GET") {
       $this->searchCustomers();
     } else {
       $this->getCustomerList();
@@ -136,6 +144,56 @@ class CustomerAPIController {
     header('Content-Type: text/json; charset=UTF-8');
     echo json_encode($customer);
   }
+
+  function updateCustomerById($id) {
+    // Get PUT data
+    parse_str(file_get_contents("php://input"), $_PUT);
+
+    // Check if all data is set
+    if (
+      isset($_PUT["title"]) &&
+      isset($_PUT["name"]) &&
+      isset($_PUT["surname"]) &&
+      isset($_PUT["birthday"]) &&
+      isset($_PUT["phone"]) &&
+      isset($_PUT["street"]) &&
+      isset($_PUT["streetNumber"])
+    ) {
+      // Validate customer data
+      $validTitle = "/^(Frau|Herr)$/";
+      $validName = "/^[^0-9]+$/";
+      $validBirthday = "/^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|1[0-2]{1})$/";
+      $validPhone = "/^[0-9]{10}$/";
+      $validStreetNumber = "/^[0-9]+[a-zA-Z]*$/";
+
+      if (
+        preg_match($validTitle, $_PUT["title"]) === 0 ||
+        preg_match($validName, $_PUT["name"]) === 0 ||
+        preg_match($validName, $_PUT["surname"]) === 0 ||
+        preg_match($validBirthday, $_PUT["birthday"]) === 0 ||
+        preg_match($validPhone, $_PUT["phone"]) === 0 ||
+        preg_match($validName, $_PUT["street"]) === 0 ||
+        preg_match($validStreetNumber, $_PUT["streetNumber"]) === 0
+      ) {
+        http_response_code(400);
+        die();
+      }
+
+      $response = $this->model->updateById(125, $_PUT);
+
+      if(!$response) {
+        http_response_code(400);
+        die();
+      } else {
+        http_response_code(200);
+        die();
+      }
+    } else {
+      http_response_code(400);
+      die();
+    }
+  }
+
 }
 
 ?>

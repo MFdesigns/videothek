@@ -50,6 +50,18 @@ class CustomerModel {
     return $result->fetch(PDO::FETCH_ASSOC);
   }
 
+  /**
+   * Updates customer data
+   *
+   * @param int $id
+   * @param string[] $data
+   * @return PDOStatement
+   */
+  function updateById($id, $data) {
+    $sql = "UPDATE TCustomers SET CustTitle='" . $data["title"] . "', CustName='" . $data["name"] . "', CustSurname='" . $data["surname"] . "', CustBirthday='" . $data["birthday"] . "', CustPhoneNumber=" . $data["phone"] . ", CustStreet='" . $data["street"] . "', CustStreetNumber='" . $data["streetNumber"] . "' WHERE CustId=$id";
+    $result = $this->conn->query($sql);
+    return $result;
+  }
 }
 
 ?>
