@@ -7,7 +7,7 @@ CREATE USER IF NOT EXISTS 'VidLibUser' IDENTIFIED BY 'oV1OB%7d';
 GRANT SELECT, INSERT, UPDATE ON *.* TO 'VidLibUser';
 
 CREATE TABLE TVideos (
-    VidNumber INT NOT NULL,
+    VidNumber INT NOT NULL AUTO_INCREMENT,
     VidTitle VARCHAR(64),
     VidDuration TIME,
     VidCategory VARCHAR(64),
@@ -28,7 +28,7 @@ CREATE TABLE TPlaces (
 );
 
 CREATE TABLE TCustomers (
-    CustId INT NOT NULL,
+    CustId INT NOT NULL AUTO_INCREMENT,
     CustTitle ENUM('Herr', 'Frau'),
     CustName VARCHAR(128),
     CustSurname VARCHAR(128),
@@ -42,7 +42,7 @@ CREATE TABLE TCustomers (
 );
 
 CREATE TABLE TLendings (
-    LendId INT NOT NULL,
+    LendId INT NOT NULL AUTO_INCREMENT,
     LendFrom DATE,
     LendUntil DATE,
     LendDeleted BOOL,
