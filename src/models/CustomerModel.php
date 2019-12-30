@@ -62,6 +62,43 @@ class CustomerModel {
     $result = $this->conn->query($sql);
     return $result;
   }
+
+  /**
+   * Creates new customer
+   *
+   * @param string[] $data
+   * @return PDOStatement
+   */
+  function create($data) {
+    $sql = "INSERT INTO TCustomers (CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, CustDeleted, PlaceONRP)
+            VALUES ('" . $data["title"] . "',
+            '" . $data["name"] . "',
+            '" . $data["surname"] . "',
+            '" . $data["birthday"] . "',
+            '" . $data["phone"] . "',
+            '" . $data["street"] . "',
+            '" . $data["streetNumber"] . "',
+             false, 4805)";
+    $result = $this->conn->query($sql);
+    $id = $this->conn->lastInsertId();
+
+    return [
+      "result" => $result,
+      "id" => $id
+    ];
+  }
+
+  /**
+   * Sets the deleted attribute to true of selected customer
+   *
+   * @param int $id
+   * @return PDOStatement
+   */
+  function delete($id) {
+    $sql = "UPDATE TCustomers SET CustDeleted=true WHERE CustId=$id";
+    $result = $this->conn->query($sql);
+    return $result;
+  }
 }
 
 ?>

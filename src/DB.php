@@ -41,6 +41,10 @@ class DB {
     $result = $prepStmt->fetchAll();
     return $result;
   }
+
+  public function lastInsertId() {
+    return self::$conn->lastInsertId();
+  }
 }
 
 ?>

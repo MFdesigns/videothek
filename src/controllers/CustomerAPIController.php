@@ -23,11 +23,39 @@ class CustomerAPIController {
         case "PUT":
           $this->updateCustomerById($requesRoute);
         break;
+
+        case "DELETE":
+          $this->deleteCustomerById($requesRoute);
+        break;
+
+        default:
+        panic(501);
+      break;
+    }
+  } else if ($requesRoute === "search") {
+    switch ($method) {
+      case "GET":
+        $this->searchCustomers();
+      break;
+
+      default:
+        panic(501);
+    }
+  } else if (!$requesRoute) {
+    switch ($method) {
+        case "GET":
+          $this->getCustomerList();
+        break;
+
+        case "POST":
+          $this->addCustomer();
+        break;
+
+        default:
+          panic(501);
       }
-    } else if ($requesRoute === "search" && $method === "GET") {
-      $this->searchCustomers();
     } else {
-      $this->getCustomerList();
+      panic(404);
     }
   }
 
@@ -65,6 +93,7 @@ class CustomerAPIController {
     ];
   }
 
+  // TODO!: Docs
   function getCustomerList() {
     $orderParams = $this->validateOrderParams();
 
@@ -72,8 +101,7 @@ class CustomerAPIController {
 
     // If there is a query error return 400 Bad request
     if (!$result) {
-      http_response_code(400);
-      die();
+      panic(400);
     }
 
     $customers = [];
@@ -90,8 +118,9 @@ class CustomerAPIController {
     echo json_encode($customers);
   }
 
+  // TODO!: Docs
   function searchCustomers() {
-    $validKeyword = "/^[a-zA-ZÀ-ÿä-ü\w]+$/";
+    $validKeyword = "/^[a-zA-ZÀ-ÿä-ü\w]+$/"; // TODO: Fix this!
     if (isset($_GET["keyword"]) && preg_match($validKeyword, $_GET["keyword"])) {
 
       $orderParams = $this->validateOrderParams();
@@ -99,8 +128,7 @@ class CustomerAPIController {
       $result = $this->model->search($_GET["keyword"], $orderParams["order"], $orderParams["direction"]);
 
       if (!$result) {
-        http_response_code(400);
-        die();
+        panic(400);
       }
 
       $customers = [];
@@ -116,17 +144,21 @@ class CustomerAPIController {
       echo json_encode($customers);
 
     } else {
-      http_response_code(400);
-      die();
+      panic(400);
     }
   }
 
+  /**
+   * Handles customer entity request (GET)
+   *
+   * @param int $id
+   * @return void
+   */
   function getCustomerById($id) {
     $result = $this->model->getById($id);
 
     if (!$result) {
-      http_response_code(404);
-      die();
+      panic(404);
     }
 
     // Translate DB attribute names into API naming schema
@@ -145,52 +177,121 @@ class CustomerAPIController {
     echo json_encode($customer);
   }
 
-  function updateCustomerById($id) {
-    // Get PUT data
-    parse_str(file_get_contents("php://input"), $_PUT);
-
+  /**
+   * Checks if customer data is valid to UPDATE/CREATE customer resource
+   *
+   * @param string[]
+   * @return bool
+   */
+    // Check if all data is set
+  function validateCustomerResourceData($data) {
     // Check if all data is set
     if (
-      isset($_PUT["title"]) &&
-      isset($_PUT["name"]) &&
-      isset($_PUT["surname"]) &&
-      isset($_PUT["birthday"]) &&
-      isset($_PUT["phone"]) &&
-      isset($_PUT["street"]) &&
-      isset($_PUT["streetNumber"])
+      isset($data["title"]) &&
+      isset($data["name"]) &&
+      isset($data["surname"]) &&
+      isset($data["birthday"]) &&
+      isset($data["phone"]) &&
+      isset($data["street"]) &&
+      isset($data["streetNumber"])
     ) {
       // Validate customer data
       $validTitle = "/^(Frau|Herr)$/";
-      $validName = "/^[^0-9]+$/";
+      $validName = "/^[^0-9]+$/"; // Same for name, surname and street
       $validBirthday = "/^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|1[0-2]{1})$/";
       $validPhone = "/^[0-9]{10}$/";
       $validStreetNumber = "/^[0-9]+[a-zA-Z]*$/";
 
       if (
-        preg_match($validTitle, $_PUT["title"]) === 0 ||
-        preg_match($validName, $_PUT["name"]) === 0 ||
-        preg_match($validName, $_PUT["surname"]) === 0 ||
-        preg_match($validBirthday, $_PUT["birthday"]) === 0 ||
-        preg_match($validPhone, $_PUT["phone"]) === 0 ||
-        preg_match($validName, $_PUT["street"]) === 0 ||
-        preg_match($validStreetNumber, $_PUT["streetNumber"]) === 0
+        preg_match($validTitle, $data["title"]) === 0 ||
+        preg_match($validName, $data["name"]) === 0 ||
+        preg_match($validName, $data["surname"]) === 0 ||
+        preg_match($validBirthday, $data["birthday"]) === 0 ||
+        preg_match($validPhone, $data["phone"]) === 0 ||
+        preg_match($validName, $data["street"]) === 0 ||
+        preg_match($validStreetNumber, $data["streetNumber"]) === 0
       ) {
-        http_response_code(400);
-        die();
+        return false;
       }
 
-      $response = $this->model->updateById(125, $_PUT);
-
-      if(!$response) {
-        http_response_code(400);
-        die();
-      } else {
-        http_response_code(200);
-        die();
-      }
+      return true;
     } else {
-      http_response_code(400);
-      die();
+      return false;
+    }
+  }
+
+  /**
+   * Handles the UPDATE (PUT) request, performs validation and
+   * updates the model
+   *
+   * @return void
+   */
+  function updateCustomerById($id) {
+    // Get PUT data
+    $phpInput = file_get_contents("php://input");
+    if (!$phpInput) {
+      panic(500);
+    }
+
+    parse_str($phpInput, $_PUT);
+
+    // Check if input data is valid
+    if (!$this->validateCustomerResourceData($_PUT)) {
+      panic(400);
+    }
+
+    $response = $this->model->updateById($id, $_PUT);
+
+    if(!$response) {
+      panic(400);
+    } else {
+      panic(200);
+    }
+  }
+
+  /**
+   * Handles the CREATE (POST) request, performs validation and
+   * adds new entity to model. Returns JSON containing the AUTO_INCREMENT
+   * CustId and API URL to request customer information
+   *
+   * @return void
+   */
+  function addCustomer() {
+    // Check if input data is valid
+    if (!$this->validateCustomerResourceData($_POST)) {
+      panic(400);
+    }
+
+    $response = $this->model->create($_POST);
+
+    if(!$response["result"]) {
+      panic(400);
+    } else {
+      // Create JSON response
+      $protocol = strpos($_SERVER["HTTP_HOST"], "http") >= 0 ? "http" : "https";
+
+      $json; // Response JSON
+      $json["id"] = $response["id"];
+      $json["href"] = $protocol . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $response["id"];
+
+      // Return newly created customer id and (GET) API url
+      header('Content-Type: text/json; charset=UTF-8');
+      echo json_encode($json);
+    }
+  }
+
+  /**
+   * Handles the DELETE customer request
+   * Does not actually perform a DELETE just marks the Entity as "deleted"
+   *
+   * @param int $id
+   * @return void
+   */
+  function deleteCustomerById($id) {
+    $response = $this->model->delete($id);
+
+    if (!$response) {
+      panic(400);
     }
   }
 
