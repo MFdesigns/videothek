@@ -18,38 +18,38 @@ class CustomerAPIController {
       switch ($method) {
         case "GET":
           $this->getCustomerById($requesRoute);
-        break;
+          break;
 
         case "PUT":
           $this->updateCustomerById($requesRoute);
-        break;
+          break;
 
         case "DELETE":
           $this->deleteCustomerById($requesRoute);
-        break;
+          break;
 
         default:
-        panic(501);
-      break;
-    }
-  } else if ($requesRoute === "search") {
-    switch ($method) {
-      case "GET":
-        $this->searchCustomers();
-      break;
+          panic(501);
+          break;
+      }
+    } else if ($requesRoute === "search") {
+      switch ($method) {
+        case "GET":
+          $this->searchCustomers();
+          break;
 
-      default:
-        panic(501);
-    }
-  } else if (!$requesRoute) {
-    switch ($method) {
+        default:
+          panic(501);
+      }
+    } else if (!$requesRoute) {
+      switch ($method) {
         case "GET":
           $this->getCustomerList();
-        break;
+          break;
 
         case "POST":
           $this->addCustomer();
-        break;
+          break;
 
         default:
           panic(501);
