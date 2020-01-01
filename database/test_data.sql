@@ -43,5 +43,5 @@ INSERT INTO TLendings (LendFrom, LendUntil, LendDeleted, VidNumber, CustId) VALU
   ('2019-10-12', '2019-10-17', false, 4, 6),
   ('2019-12-15', '2019-12-17', false, 2, 4),
   ('2019-11-28', '2019-12-04', false, 3, 5),
-  ('2019-12-02', '2019-12-12', false, 5, 1),
+  ('2019-12-02', '2019-12-12', false, 7, 1),
   ('2019-12-18', '2019-12-19', false, 6, 2);
