@@ -1,9 +1,10 @@
 <?php
 
 require_once ROOT . "/utils.php";
+require_once ROOT . "/controllers/APIController.php";
 require_once ROOT . "/models/CustomerModel.php";
 
-class CustomerAPIController {
+class CustomerAPIController extends APIController {
 
   private $model;
 
@@ -114,8 +115,7 @@ class CustomerAPIController {
       array_push($customers, $custData);
     }
 
-    header('Content-Type: text/json; charset=UTF-8');
-    echo json_encode($customers);
+    parent::returnJSON($customers);
   }
 
   // TODO!: Docs
@@ -140,8 +140,7 @@ class CustomerAPIController {
         ]);
       }
 
-      header('Content-Type: text/json; charset=UTF-8');
-      echo json_encode($customers);
+      parent::returnJSON($customers);
 
     } else {
       panic(400);
@@ -173,8 +172,7 @@ class CustomerAPIController {
     $customer["onrp"] = $result["PlaceONRP"];
     $customer["city"] = $result["PlaceCity"];
 
-    header('Content-Type: text/json; charset=UTF-8');
-    echo json_encode($customer);
+    parent::returnJSON($customer);
   }
 
   /**
@@ -275,8 +273,7 @@ class CustomerAPIController {
       $json["href"] = $protocol . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $response["id"];
 
       // Return newly created customer id and (GET) API url
-      header('Content-Type: text/json; charset=UTF-8');
-      echo json_encode($json);
+      parent::returnJSON($json);
     }
   }
 

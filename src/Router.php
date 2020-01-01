@@ -1,6 +1,7 @@
 <?php
 
 require_once ROOT . "/utils.php";
+require_once ROOT . "/APIRouter.php";
 
 class Router {
 
@@ -15,6 +16,10 @@ class Router {
     // Check if route is root
     if ($URLPath === "/") {
       pageNotFound();
+    } else if ($pathSegments[1] === "api") {
+      array_shift($pathSegments);
+      array_shift($pathSegments);
+      new APIRouter($pathSegments);
     } else {
       $routerURL = $pathSegments[1];
 
