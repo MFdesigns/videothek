@@ -107,10 +107,12 @@ class CustomerAPIController extends APIController {
 
     $customers = [];
     foreach ($result as $customer) {
+      $href = parent::getProtocol() . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $customer["CustId"];
       $custData = [
         "id" => $customer["CustId"],
         "name" => $customer["CustName"],
-        "surname" => $customer["CustSurname"]
+        "surname" => $customer["CustSurname"],
+        "href" => $href
       ];
       array_push($customers, $custData);
     }
@@ -266,11 +268,9 @@ class CustomerAPIController extends APIController {
       panic(400);
     } else {
       // Create JSON response
-      $protocol = strpos($_SERVER["HTTP_HOST"], "http") >= 0 ? "http" : "https";
-
       $json; // Response JSON
       $json["id"] = $response["id"];
-      $json["href"] = $protocol . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $response["id"];
+      $json["href"] = parent::getProtocol() . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $response["id"];
 
       // Return newly created customer id and (GET) API url
       parent::returnJSON($json);
