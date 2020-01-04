@@ -22,7 +22,7 @@ class APIController {
    */
   protected static function getProtocol() {
     $protocol = "http";
-    if(strpos($_SERVER["HTTP_HOST"], "https") >= 0) {
+    if(strpos($_SERVER["SERVER_PROTOCOL"], "https")) {
       $protocol = "https";
     }
     return $protocol;
