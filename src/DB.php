@@ -12,7 +12,7 @@ class DB {
     // Only create a connection if there wasn't already one created
     if (!isset(self::$conn)) {
       try {
-        self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbname, self::$user, self::$password);
+        self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbname . ";charset=utf8", self::$user, self::$password);
       } catch(PDOException $e) {
         echo $e->getMessage();
         die();

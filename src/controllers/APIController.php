@@ -10,7 +10,7 @@ class APIController {
    * @return void
    */
   protected static function returnJSON($data) {
-    header('Content-Type: text/json; charset=UTF-8');
+    header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($data);
     die();
   }
