@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS video_library;
-CREATE DATABASE video_library;
+CREATE DATABASE video_library CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 
 USE video_library;
 
