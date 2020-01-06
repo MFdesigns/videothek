@@ -135,10 +135,12 @@ class CustomerAPIController extends APIController {
 
       $customers = [];
       foreach ($result as $customer) {
+        $href = parent::getProtocol() . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $customer["CustId"];
         array_push($customers, [
           "id" => $customer["CustId"],
           "name" => $customer["CustName"],
-          "surname" => $customer["CustSurname"]
+          "surname" => $customer["CustSurname"],
+          "href" => $href
         ]);
       }
 
