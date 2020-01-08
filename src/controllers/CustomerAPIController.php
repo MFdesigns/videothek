@@ -164,6 +164,8 @@ class CustomerAPIController extends APIController {
       panic(404);
     }
 
+    $href = parent::getProtocol() . "://" . $_SERVER["SERVER_NAME"] . "/api/customers/" . $result["CustId"];
+
     // Translate DB attribute names into API naming schema
     $customer["id"] = $result["CustId"];
     $customer["title"] = $result["CustTitle"];
@@ -175,6 +177,7 @@ class CustomerAPIController extends APIController {
     $customer["streetNumber"] = $result["CustStreetNumber"];
     $customer["onrp"] = $result["PlaceONRP"];
     $customer["city"] = $result["PlaceCity"];
+    $customer["href"] = $href;
 
     parent::returnJSON($customer);
   }
@@ -200,7 +203,7 @@ class CustomerAPIController extends APIController {
       // Validate customer data
       $validTitle = "/^(Frau|Herr)$/";
       $validName = "/^[^0-9]+$/"; // Same for name, surname and street
-      $validBirthday = "/^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|1[0-2]{1})$/";
+      $validBirthday = "/^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|1[0-9]{1}|2[0-9]{1}|3[01]{1})$/";
       $validPhone = "/^[0-9]{10}$/";
       $validStreetNumber = "/^[0-9]+[a-zA-Z]*$/";
 
@@ -235,19 +238,19 @@ class CustomerAPIController extends APIController {
       panic(500);
     }
 
-    parse_str($phpInput, $_PUT);
+    $PUT = json_decode($phpInput, true);
 
     // Check if input data is valid
-    if (!$this->validateCustomerResourceData($_PUT)) {
+    if (!$this->validateCustomerResourceData($PUT)) {
       panic(400);
     }
 
-    $response = $this->model->updateById($id, $_PUT);
+    $response = $this->model->updateById($id, $PUT);
 
     if(!$response) {
       panic(400);
     } else {
-      panic(200);
+      panic(200); // TODO: This is not a panic!
     }
   }
 
@@ -259,12 +262,20 @@ class CustomerAPIController extends APIController {
    * @return void
    */
   function addCustomer() {
-    // Check if input data is valid
-    if (!$this->validateCustomerResourceData($_POST)) {
+    $phpInput = file_get_contents("php://input");
+
+    if (!$phpInput) {
       panic(400);
     }
 
-    $response = $this->model->create($_POST);
+    $POST = json_decode($phpInput, true);
+
+    // Check if input data is valid
+    if (!$this->validateCustomerResourceData($POST)) {
+      panic(400);
+    }
+
+    $response = $this->model->create($POST);
 
     if(!$response["result"]) {
       panic(400);
