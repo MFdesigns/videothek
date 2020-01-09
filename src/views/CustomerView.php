@@ -81,11 +81,11 @@
 
       <!-- Customer info action buttons -->
       <div id="info-action" class="section__action">
-        <button class="action-button text--dark" id="cust-edit-btn" type="button">
+        <button class="action-button text--dark" id="cust-edit-btn" type="button" disabled>
           <img class="action-button__icon" src="/res/icons/placeholder_icon.svg" alt="Kunde editieren Icon">
           Bearbeiten
         </button>
-        <button class="action-button text--dark" id="cust-delete-btn" type="button">
+        <button class="action-button text--dark" id="cust-delete-btn" type="button" disabled>
           <img class="action-button__icon" src="/res/icons/placeholder_icon.svg" alt="Kunde löschen Icon">
           Löschen
         </button>
@@ -103,52 +103,56 @@
             <div class="info-form__item">
               <!-- Customer ID -->
               <label class="text--dark" for="cust-id">KundenNr</label>
-              <input name="id" id="cust-id" class="info-form__input text--dark" type="text" readonly required>
+              <input name="id" id="cust-id" class="info-form__input text--dark" type="text" autocomplete="off" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer title -->
               <label class="text--dark" for="cust-title">Anrede</label>
-              <input name="title" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-title" readonly required>
+              <select name="title" id="cust-title" class="info-form__input text--dark cust-info-item-editable" disabled required>
+                <option value="" selected>-</option>
+                <option value="Frau">Frau</option>
+                <option value="Herr">Herr</option>
+              </select>
             </div>
             <div class="info-form__item">
               <!-- Customer name -->
               <label class="text--dark" for="cust-name">Vorname</label>
-              <input name="name" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-name" readonly required>
+              <input name="name" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-name" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer surname -->
               <label class="text--dark" for="cust-surname">Nachname</label>
-              <input name="surname" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-surname" readonly required>
+              <input name="surname" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-surname" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer birthday -->
               <label class="text--dark" for="cust-birthday">Geburtstag</label>
-              <input name="birthday" class="info-form__input text--dark cust-info-item-editable" type="date" id="cust-birthday" readonly required>
+              <input name="birthday" class="info-form__input text--dark cust-info-item-editable" type="date" id="cust-birthday" autocomplete="off" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer phone -->
               <label class="text--dark" for="cust-phone">Telefon</label>
-              <input name="phone" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-phone" readonly required>
+              <input name="phone" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-phone" autocomplete="off" title="Darf nur aus Zahlen bestehen und 10 Zeichen lang sein" pattern="^[\d]{10}$" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer street -->
               <label class="text--dark" for="cust-street">Strasse</label>
-              <input name="street" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-street" readonly required>
+              <input name="street" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-street" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer street number -->
               <label class="text--dark" for="cust-streetnumber">Strassenummer</label>
-              <input name="streetNumber" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-streetnumber" readonly required>
+              <input name="streetNumber" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-streetnumber" autocomplete="off" title="Muss mit einer Zahl beginnen, eventuell gefolgt von Buchstaben" pattern="^[\d]+[a-zA-Z]*$" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer ONRP -->
               <label class="text--dark" for="cust-onrp">ONRP</label>
-              <input name="onrp" type="text" id="cust-onrp" class="info-form__input text--dark" readonly required>
+              <input name="onrp" type="text" id="cust-onrp" class="info-form__input text--dark" autocomplete="off" readonly required>
             </div>
             <div class="info-form__item">
               <!-- Customer city -->
               <label class="text--dark" for="cust-city">Stadt</label>
-              <input name="city" type="text" id="cust-city" class="info-form__input text--dark" readonly required>
+              <input name="city" type="text" id="cust-city" class="info-form__input text--dark" autocomplete="off" readonly required>
             </div>
           </div>
 
@@ -181,7 +185,7 @@
   <div id="msg-delete-user" class="message-box">
     <div class="dialogue dialogue--error">
       <h1 class="title--light">Wollen Sie den Kunden wirklich löschen?</h1>
-      <p class="text--light">#12 Martin Fischer</p>
+      <p id="msg-delete-user-info" class="text--light">#12 Martin Fischer</p>
       <div class="dialogue__buttons">
         <button id="msg-delete-cust-yes" class="dialogue-button text--dark" type="button">Ja, löschen</button>
         <button id="msg-delete-cust-no" class="dialogue-button text--dark" type="button">Abbrechen</button>

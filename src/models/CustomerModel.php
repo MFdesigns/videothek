@@ -33,7 +33,7 @@ class CustomerModel {
    * @return PDOStatement
    */
   function search($keyword, $orderBy = "CustId", $direction = "ASC") {
-    $sql = "SELECT CustId, CustName, CustSurname FROM TCustomers WHERE CustDeleted = false AND CustId LIKE '$keyword' OR CustName LIKE '%$keyword%' OR CustSurname LIKE '%$keyword%' ORDER BY $orderBy $direction";
+    $sql = "SELECT CustId, CustName, CustSurname FROM TCustomers WHERE CustDeleted = false AND (CustId LIKE '$keyword' OR CustName LIKE '%$keyword%' OR CustSurname LIKE '%$keyword%') ORDER BY $orderBy $direction";
     $result = $this->conn->query($sql);
     return $result;
   }

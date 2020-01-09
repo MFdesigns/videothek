@@ -33,26 +33,22 @@ const custCityInput = document.getElementById('cust-city');
 
 // Customer info editable input fields
 const custInfoEditFields = document.getElementsByClassName('cust-info-item-editable');
-const custInfoEditBtn = document.getElementById('cust-edit-btn');
-const custInfoDeleteBtn = document.getElementById('cust-delete-btn');
-const custInfoAddBtn = document.getElementById('cust-add-btn');
-const custInfoCancelBtn = document.getElementById('cust-info-cancel-btn');
-const custInfoSaveBtn = document.getElementById('cust-info-save-btn');
 
 // Message boxes
 const msgDeleteUser = document.getElementById('msg-delete-user');
 
 const infoState = {
-  show: 0,
-  edit: 1,
-  new: 2,
+  null: 0,
+  show: 1,
+  edit: 2,
+  new: 3,
 };
 
 // States
 const app = {
   searchActive: false,
-  info: infoState.show,
-  customerHref: '',
+  info: infoState.null,
+  currentCustomer: null,
 };
 
 const custTable = {
@@ -204,11 +200,16 @@ function displayCustomerInfo(data) {
 /**
  * Disables or enables customer info action buttons
  *
- * @param {bool} state
+ * @param {bool} state edit, delete customer
+ * @param {bool} newBtnState create customer
  */
-function enableInfoActionButtons(state) {
+function enableInfoActionButtons(state, newBtnState) {
   document.querySelectorAll('#info-action > .action-button').forEach((btn) => {
-    btn.toggleAttribute('disabled', !state);
+    if (btn.id === 'cust-add-btn') {
+      btn.toggleAttribute('disabled', !newBtnState);
+    } else {
+      btn.toggleAttribute('disabled', !state);
+    }
   });
 }
 
@@ -221,13 +222,15 @@ function enableCustomerEditMode(state) {
   // Enable or disables all editable inputs in the customer info form
   for (let i = 0; i < custInfoEditFields.length; i += 1) {
     if (state) {
-      custInfoEditFields[i].toggleAttribute('readonly', false);
+      if (custInfoEditFields[i].nodeName === 'SELECT') {
+        custInfoEditFields[i].toggleAttribute('disabled', false);
+      } else {
+        custInfoEditFields[i].toggleAttribute('readonly', false);
+      }
+    } else if (custInfoEditFields[i].nodeName === 'SELECT') {
+      custInfoEditFields[i].toggleAttribute('disabled', true);
     } else {
       custInfoEditFields[i].toggleAttribute('readonly', true);
-      // If edit mode is disabled get current customer data and display it
-      getCustomerInfo(custInfoForm.dataset.href).then((customer) => {
-        displayCustomerInfo(customer);
-      });
     }
   }
 }
@@ -270,7 +273,7 @@ function convertInfoFormToJson(formData) {
 async function updateCustomer(jsonData) {
   const apiURL = custInfoForm.dataset.href;
 
-  const request = await fetch(apiURL, {
+  await fetch(apiURL, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -286,6 +289,12 @@ async function updateCustomer(jsonData) {
  */
 function displayCustDeleteMsg(state) {
   if (state) {
+    // Display customer id, name and surname to be deleted
+    const p = document.getElementById('msg-delete-user-info');
+    const formData = new FormData(custInfoForm);
+    const text = `#${formData.get('id')} ${formData.get('name')} ${formData.get('surname')}`;
+    p.textContent = text;
+
     msgDeleteUser.style.display = 'grid';
   } else {
     msgDeleteUser.style.display = 'none';
@@ -301,6 +310,11 @@ async function deleteCustomer(apiURL) {
   await fetch(apiURL, { method: 'DELETE' });
 }
 
+/**
+ * Adds a new customer
+ *
+ * @param {object} data
+ */
 async function addCustomer(data) {
   const apiURL = new URL(`${apiRoot}/customers`);
 
@@ -317,6 +331,7 @@ async function addCustomer(data) {
  * Clears customer info form and displays empty values
  */
 function clearCustomerForm() {
+  // Clear all inputs
   custInfoForm.dataset.href = '';
   custIdInput.value = '';
   custTitleInput.value = '';
@@ -326,8 +341,45 @@ function clearCustomerForm() {
   custPhoneInput.value = '';
   custStreetInput.value = '';
   custStreetNumberInput.value = '';
-  custONRPInput.value = '';
-  custCityInput.value = '';
+
+  // Dirty fix
+  custONRPInput.value = '4805';
+  custCityInput.value = 'Frauenfeld';
+}
+
+function setInfoState(state) {
+  switch (state) {
+    case infoState.null:
+      enableInfoActionButtons(false, true);
+      enableCustomerEditMode(false);
+      enableInfoContextButtons(false);
+      clearCustomerForm();
+      break;
+
+    case infoState.show:
+      enableCustomerEditMode(false);
+      enableInfoContextButtons(false);
+      enableInfoActionButtons(true, true);
+      break;
+
+    case infoState.new:
+      clearCustomerForm();
+      enableCustomerEditMode(true);
+      enableInfoContextButtons(true);
+      enableInfoActionButtons(false, false);
+      break;
+
+    case infoState.edit:
+      enableCustomerEditMode(true);
+      enableInfoContextButtons(true);
+      enableInfoActionButtons(false, false);
+      break;
+
+    default:
+      break;
+  }
+
+  app.info = state;
 }
 
 /*
@@ -358,9 +410,13 @@ for (let i = 0; i < tables.length; i += 1) {
       // customer informations
     } else if (target.closest('tr')) {
       const tr = target.closest('tr'); // Clicked table row
-      getCustomerInfo(tr.dataset.href).then((customer) => {
-        displayCustomerInfo(customer);
-      });
+      if (app.info === infoState.null || app.info === infoState.show) {
+        setInfoState(infoState.show);
+        getCustomerInfo(tr.dataset.href).then((customer) => {
+          app.currentCustomer = customer;
+          displayCustomerInfo(customer);
+        });
+      }
     }
   });
 }
@@ -388,14 +444,10 @@ custSearchClear.addEventListener('click', () => {
 // Handles all buttons in customer info (New, Edit, Delete Customer)
 custInfoAction.addEventListener('click', (event) => {
   const targetId = event.target.id;
-  const currentCustHref = custInfoForm.dataset.href;
 
   switch (targetId) {
     case 'cust-edit-btn':
-      enableInfoActionButtons(false);
-      app.info = infoState.edit;
-      enableCustomerEditMode(true);
-      enableInfoContextButtons(true);
+      setInfoState(infoState.edit);
       break;
 
     case 'cust-delete-btn':
@@ -403,11 +455,7 @@ custInfoAction.addEventListener('click', (event) => {
       break;
 
     case 'cust-add-btn':
-      clearCustomerForm();
-      app.info = infoState.edit;
-      enableCustomerEditMode(true);
-      enableInfoContextButtons(true);
-      enableInfoActionButtons(false);
+      setInfoState(infoState.new);
       break;
 
     default:
@@ -422,30 +470,56 @@ custInfoContextAction.addEventListener('click', (event) => {
 
   switch (targetId) {
     case 'info-save-btn':
+
       if (custInfoForm.checkValidity()) {
         const form = new FormData(custInfoForm);
         const formJSON = convertInfoFormToJson(form);
-        updateCustomer(formJSON).then(() => {
-          getCustomerInfo(custInfoForm.dataset.href).then((customer) => {
-            displayCustomerInfo(customer);
-            app.info = infoState.show;
-            enableCustomerEditMode(false);
-            enableInfoActionButtons(true);
-            enableInfoContextButtons(false);
-            // Update customer list
-            getCustomerList(custTable.order, custTable.direction).then((customers) => {
-              displayCustomerList(customers);
+
+        switch (app.info) {
+          case infoState.edit:
+            updateCustomer(formJSON).then(() => {
+              getCustomerInfo(custInfoForm.dataset.href).then((customer) => {
+                setInfoState(infoState.show);
+                displayCustomerInfo(customer);
+                // Update customer list
+                getCustomerList(custTable.order, custTable.direction).then((customers) => {
+                  displayCustomerList(customers);
+                });
+              });
             });
-          });
-        });
+            break;
+
+          case infoState.new:
+            addCustomer(formJSON).then((customerHref) => {
+              setInfoState(infoState.show);
+
+              getCustomerInfo(customerHref.href).then((customer) => {
+                displayCustomerInfo(customer);
+              });
+
+              // Update customer list
+              getCustomerList(custTable.order, custTable.direction).then((customers) => {
+                displayCustomerList(customers);
+              });
+            });
+
+            break;
+
+          default:
+            break;
+        }
+      } else {
+        custInfoForm.reportValidity();
       }
       break;
 
     case 'info-cancel-btn':
-      enableInfoActionButtons(true);
-      app.info = infoState.show;
-      enableCustomerEditMode(false);
-      enableInfoContextButtons(false);
+      if (app.info === infoState.new) {
+        setInfoState(infoState.null);
+      } else {
+        setInfoState(infoState.show);
+        displayCustomerInfo(app.currentCustomer);
+      }
       break;
 
     default:
@@ -460,12 +534,12 @@ msgDeleteUser.addEventListener('click', (event) => {
   switch (target.id) {
     case 'msg-delete-cust-yes':
       deleteCustomer(custInfoForm.dataset.href).then(() => {
+        setInfoState(infoState.null);
         getCustomerList(custTable.order, custTable.direction).then((customers) => {
           displayCustomerList(customers);
         });
-        clearCustomerForm();
-        displayCustDeleteMsg(false);
       });
+      displayCustDeleteMsg(false);
       break;
 
     case 'msg-delete-cust-no':

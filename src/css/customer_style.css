@@ -338,7 +338,8 @@ tbody tr:nth-child(odd) {
 .info-form__input:hover:disabled {
   cursor: default;
 }
-.info-form__input[readonly] {
+.info-form__input[readonly],
+.info-form__input:disabled {
   background-color: transparent;
   border: 1px solid transparent;
 }
