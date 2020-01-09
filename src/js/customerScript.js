@@ -20,16 +20,16 @@ const custInfoContextAction = document.getElementById('info-context-action');
 const custInfoForm = document.getElementById('cust-info-form');
 
 // Customer infos input fields
-const custIdInput = document.getElementById('cust-id');
-const custTitleInput = document.getElementById('cust-title');
-const custNameInput = document.getElementById('cust-name');
-const custSurnameInput = document.getElementById('cust-surname');
-const custBirthdayInput = document.getElementById('cust-birthday');
-const custPhoneInput = document.getElementById('cust-phone');
-const custStreetInput = document.getElementById('cust-street');
-const custStreetNumberInput = document.getElementById('cust-streetnumber');
-const custONRPInput = document.getElementById('cust-onrp');
-const custCityInput = document.getElementById('cust-city');
+const custIdInput = document.querySelector('.cust-id .info-form__input');
+const custTitleInput = document.querySelector('.cust-title .info-form__input');
+const custNameInput = document.querySelector('.cust-name .info-form__input');
+const custSurnameInput = document.querySelector('.cust-surname .info-form__input');
+const custBirthdayInput = document.querySelector('.cust-birthday .info-form__input');
+const custPhoneInput = document.querySelector('.cust-phone .info-form__input');
+const custStreetInput = document.querySelector('.cust-street .info-form__input');
+const custStreetNumberInput = document.querySelector('.cust-street-number .info-form__input');
+const custONRPInput = document.querySelector('.cust-onrp .info-form__input');
+const custCityInput = document.querySelector('.cust-city .info-form__input');
 
 // Customer info editable input fields
 const custInfoEditFields = document.getElementsByClassName('cust-info-item-editable');
