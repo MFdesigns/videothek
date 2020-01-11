@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="author" content="Webdesign AG">
+  <meta name="author" content="Michel Fäh, Dario Romandini, Julian Vogt">
   <meta name="description" content="Videothek Management Seite">
   <title>Videothek | <?php echo $pageTitle; ?></title>
   <link rel="stylesheet" href="/css/customer_style.css">
@@ -178,20 +178,76 @@
     </div>
 
     <div class="section customer-lendings">
-      <h3 class="section__title title--dark">Ausleihen</h3>
-      <div class="section__content"></div>
+      <div class="section__header">
+        <!-- Customer info title -->
+        <h2 class="section__title title--dark">Ausleihen</h2>
+
+        <!-- Customer info action buttons -->
+        <div id="lend-action" class="section__action">
+          <button class="action-button text--dark" id="lend-edit-btn" type="button" disabled>
+            <img class="action-button__icon" src="/res/icons/edit_icon.svg" alt="Ausleihe editieren Icon">
+            Bearbeiten
+          </button>
+          <button class="action-button text--dark" id="lend-delete-btn" type="button" disabled>
+            <img class="action-button__icon" src="/res/icons/delete_icon.svg" alt="Ausleihe löschen Icon">
+            Löschen
+          </button>
+          <button class="action-button text--dark" id="lend-add-btn" type="button" disabled>
+            <img class="action-button__icon" src="/res/icons/add_icon.svg" alt="Ausleihe hinzufügen Icon">
+            Neue Ausleihe
+          </button>
+        </div>
+      </div>
+
       <!-- Customer lendings content -->
+      <div class="section__content">
+        <table id="customer-lendings-table" class="table">
+          <thead>
+            <tr>
+              <th class="table__order table-align-end table__order--asc" data-order="vidId">VidNr
+                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+              </th>
+              <th class="table__order" data-order="title">Titel
+                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+              </th>
+              <th class="table__order" data-order="from">Von
+                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+              </th>
+              <th class="table__order" data-order="until">Bis
+                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+              </th>
+            </tr>
+          </thead>
+          <tbody id="customer-lendings-output"></tbody>
+        </table>
+
+        <div class="customer-lending-overlay">
+          <form id="cust-lending-form">
+            <h2>Neue Ausleihe hinzufügen</h2>
+
+            <label for="lend-vidId">VideoNr</label>
+            <input id="lend-vidId" name="vidId" type="text" pattern="^[0-9]+$" required>
+            <label for="lend-from">Ausleihdatum</label>
+            <input id="lend-from" name="from" type="date" required>
+            <label for="lend-until">Rückgabedatum</label>
+            <input id="lend-until" name="until" type="date">
+
+            <button type="submit" id="lend-save-btn">Speichern</button>
+            <button type="button" id="lend-cancel-btn">Abbrechen</button>
+          </form>
+        </div>
+      </div>
     </div>
   </main>
 
   <footer>
-    <p>Copyright © Webdesign AG</p>
+    <p class="text--dark">Copyright © Michel Fäh, Dario Romandini, Julian Vogt</p>
   </footer>
 
   <div id="msg-delete-user" class="message-box">
     <div class="dialogue dialogue--error">
       <h1 class="title--light">Wollen Sie den Kunden wirklich löschen?</h1>
-      <p id="msg-delete-user-info" class="text--light">#12 Martin Fischer</p>
+      <p id="msg-delete-user-info" class="text--light">Placeholder</p>
       <div class="dialogue__buttons">
         <button id="msg-delete-cust-yes" class="dialogue-button text--dark" type="button">Ja, löschen</button>
         <button id="msg-delete-cust-no" class="dialogue-button text--dark" type="button">Abbrechen</button>
@@ -199,13 +255,13 @@
     </div>
   </div>
 
-  <div class="message-box">
-    <div class="dialogue dialogue--warning">
-      <h1 class="title--light">Ooops, etwas ist schiefgegangen...</h1>
-      <p class="text--light">Bitte kontaktieren Sie den Support.</p>
+  <div id="msg-delete-lending" class="message-box">
+    <div class="dialogue dialogue--error">
+      <h1 class="title--light">Wollen Sie die Ausleihe wirklich löschen?</h1>
+      <p id="msg-delete-lend-info" class="text--light">Placeholder</p>
       <div class="dialogue__buttons">
-        <button class="dialogue-button text--dark" type="button">Ok</button>
-        <button class="dialogue-button text--dark" type="button">Abbrechen</button>
+        <button id="msg-delete-lend-yes" class="dialogue-button text--dark" type="button">Ja, löschen</button>
+        <button id="msg-delete-lend-no" class="dialogue-button text--dark" type="button">Abbrechen</button>
       </div>
     </div>
   </div>
@@ -217,7 +273,16 @@
   </template>
 
   <template id="cust-list-item">
-    <tr data-href="">
+    <tr data-href="" data-id="">
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </template>
+
+  <template id="cust-lendings-item">
+    <tr data-id="">
+      <td></td>
       <td></td>
       <td></td>
       <td></td>

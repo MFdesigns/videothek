@@ -4,7 +4,6 @@ const apiRoot = `${window.location.protocol}//${window.location.host}/api`;
 /* const custListTable = document.getElementById('customer-list-table');
  */
 const custTableBody = document.getElementById('customer-list-output');
-const tables = document.getElementsByClassName('table');
 
 const custSearch = document.getElementById('cust-search');
 const custSearchInput = document.getElementById('search__input');
@@ -44,15 +43,30 @@ const infoState = {
   new: 3,
 };
 
+const lendingsState = {
+  null: 0,
+  show: 1,
+  selected: 2,
+  edit: 3,
+  new: 4,
+};
+
 // States
 const app = {
   searchActive: false,
   info: infoState.null,
+  lendings: infoState.null,
   currentCustomer: null,
+  selectedLending: null,
 };
 
 const custTable = {
   order: 'id',
+  direction: 'asc',
+};
+
+const lendingsTable = {
+  order: 'vidId',
   direction: 'asc',
 };
 
@@ -79,6 +93,7 @@ function displayCustomerList(data) {
     const tds = listItem.querySelectorAll('td');
 
     tr.dataset.href = customer.href;
+    tr.dataset.id = customer.id;
     tds[0].textContent = customer.id;
     tds[1].textContent = customer.name;
     tds[2].textContent = customer.surname;
@@ -382,6 +397,138 @@ function setInfoState(state) {
   app.info = state;
 }
 
+function setLendingsState(state) {
+
+  const editOverlay = document.getElementsByClassName('customer-lending-overlay')[0];
+  const editBtn = document.getElementById('lend-edit-btn');
+  const deleteBtn = document.getElementById('lend-delete-btn');
+  const addBtn = document.getElementById('lend-add-btn');
+
+  app.lendings = state;
+
+  switch (state) {
+    case lendingsState.null:
+      editOverlay.style.display = 'none';
+      editBtn.toggleAttribute('disabled', true);
+      deleteBtn.toggleAttribute('disabled', true);
+      addBtn.toggleAttribute('disabled', true);
+      break;
+
+    case lendingsState.show:
+      editOverlay.style.display = 'none';
+      editBtn.toggleAttribute('disabled', true);
+      deleteBtn.toggleAttribute('disabled', true);
+      addBtn.toggleAttribute('disabled', false);
+      break;
+
+    case lendingsState.selected:
+      editOverlay.style.display = 'none';
+      editBtn.toggleAttribute('disabled', false);
+      deleteBtn.toggleAttribute('disabled', false);
+      addBtn.toggleAttribute('disabled', false);
+      break;
+
+    case lendingsState.edit:
+      editOverlay.style.display = 'block';
+      editBtn.toggleAttribute('disabled', true);
+      deleteBtn.toggleAttribute('disabled', true);
+      addBtn.toggleAttribute('disabled', true);
+      break;
+
+    case lendingsState.new:
+      editOverlay.style.display = 'block';
+      editBtn.toggleAttribute('disabled', true);
+      deleteBtn.toggleAttribute('disabled', true);
+      addBtn.toggleAttribute('disabled', true);
+      break;
+
+    default:
+      break;
+  }
+}
+
+async function addLending(data) {
+  const request = await fetch(`${apiRoot}/lendings`, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+  const response = await request.json();
+  return response;
+}
+
+/**
+ * Fetches all lendings of customer
+ *
+ * @param {number} custId
+ * @returns {object} lendings
+ */
+async function getLendings(custId, orderBy, orderDirection) {
+  const apiURL = new URL(`${apiRoot}/lendings/customer/${custId}`);
+  apiURL.searchParams.set('order', orderBy);
+  apiURL.searchParams.set('direction', orderDirection);
+
+  const request = await fetch(apiURL, { method: 'GET' });
+  const lendings = await request.json();
+  return lendings;
+}
+
+async function updateLending(id, data) {
+  const apiURL = `${apiRoot}/lendings/${id}`;
+  await fetch(apiURL, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+/**
+ * Displays provided lendings data
+ *
+ * @param {object} data
+ */
+function displayLendings(data) {
+  const tbody = document.getElementById('customer-lendings-output');
+  const template = document.getElementById('cust-lendings-item');
+
+  if (data.length <= 0) {
+    tbody.innerHTML = '';
+  } else {
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < data.length; i += 1) {
+      const temp = template.content.cloneNode(true);
+      const tr = temp.querySelector('tr');
+      const tds = temp.querySelectorAll('td');
+
+      tr.dataset.id = data[i].lendId;
+
+      tds[0].textContent = data[i].vidId;
+      tds[1].textContent = data[i].title;
+      tds[2].textContent = data[i].from;
+      tds[3].textContent = data[i].until;
+
+      fragment.appendChild(temp);
+    }
+
+    tbody.innerHTML = '';
+    tbody.appendChild(fragment);
+  }
+}
+
+function selectRow(table, selectedTr) {
+  table.querySelectorAll('tr').forEach((tr) => {
+    if (tr === selectedTr) {
+      tr.classList.toggle('selected-row', true);
+    } else {
+      tr.classList.toggle('selected-row', false);
+    }
+  });
+}
+
+async function deleteLending(id) {
+  const apiURL = `${apiRoot}/lendings/${id}`;
+  await fetch(apiURL, { method: 'DELETE' });
+}
+
 /*
   EVENT LISTENERS
 */
@@ -393,33 +540,61 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Handles all table events
-for (let i = 0; i < tables.length; i += 1) {
-  tables[i].addEventListener('click', (event) => {
+document.querySelectorAll('.table').forEach((table) => {
+  table.addEventListener('click', (event) => {
     const { target } = event;
+    const th = target.closest('th'); // Clicked table header
+    const tr = target.closest('tr'); // Clicked table row
 
     // Check if event occured on table header or table data element
-    if (target.closest('th')) {
-      const th = target.closest('th'); // Clicked table header
-      setTableOrder(tables[i], th, custTable);
-      getCustomerList(custTable.order, custTable.direction)
-        .then((customers) => {
-          displayCustomerList(customers);
-        });
+    if (th) {
+      if (table.id === 'customer-list-table') {
+        setTableOrder(table, th, custTable);
+        getCustomerList(custTable.order, custTable.direction)
+          .then((customers) => {
+            displayCustomerList(customers);
+          });
+      } else {
+        setTableOrder(table, th, lendingsTable);
+        if (app.currentCustomer) {
+          getLendings(app.currentCustomer.id, lendingsTable.order, lendingsTable.direction)
+            .then((lendings) => {
+              displayLendings(lendings);
+            });
+        }
+      }
 
       // If event has occured on a table row, display selected
       // customer informations
-    } else if (target.closest('tr')) {
-      const tr = target.closest('tr'); // Clicked table row
-      if (app.info === infoState.null || app.info === infoState.show) {
-        setInfoState(infoState.show);
-        getCustomerInfo(tr.dataset.href).then((customer) => {
-          app.currentCustomer = customer;
-          displayCustomerInfo(customer);
-        });
+    } else if (tr) {
+      if (table.id === 'customer-list-table') {
+        if (app.info === infoState.null || app.info === infoState.show) {
+          setInfoState(infoState.show);
+          getCustomerInfo(tr.dataset.href).then((customer) => {
+            app.currentCustomer = customer;
+            displayCustomerInfo(customer);
+          });
+
+          getLendings(tr.dataset.id, lendingsTable.order, lendingsTable.direction)
+            .then((lendings) => {
+              displayLendings(lendings);
+              setLendingsState(lendingsState.show);
+            });
+        }
+      } else {
+        const tds = tr.querySelectorAll('td');
+        app.selectedLending = {
+          lendId: tr.dataset.id,
+          vidId: tds[0].textContent,
+          from: tds[2].textContent,
+          until: tds[3].textContent,
+        };
+        selectRow(table, tr);
+        setLendingsState(lendingsState.selected);
       }
     }
   });
-}
+});
 
 // Customer search events
 
@@ -456,6 +631,34 @@ custInfoAction.addEventListener('click', (event) => {
 
     case 'cust-add-btn':
       setInfoState(infoState.new);
+      break;
+
+    default:
+      break;
+  }
+});
+
+document.getElementById('lend-action').addEventListener('click', (event) => {
+  const targetId = event.target.id;
+
+  const idInput = document.getElementById('lend-vidId');
+  const fromInput = document.getElementById('lend-from');
+  const untilInput = document.getElementById('lend-until');
+
+  switch (targetId) {
+    case 'lend-edit-btn':
+      setLendingsState(lendingsState.edit);
+      idInput.value = app.selectedLending.lendId;
+      fromInput.value = app.selectedLending.from;
+      untilInput.value = app.selectedLending.until;
+      break;
+
+    case 'lend-delete-btn':
+      document.getElementById('msg-delete-lending').style.display = 'grid';
+      break;
+
+    case 'lend-add-btn':
+      setLendingsState(lendingsState.new);
       break;
 
     default:
@@ -527,6 +730,46 @@ custInfoContextAction.addEventListener('click', (event) => {
   }
 });
 
+document.getElementById('lend-save-btn').addEventListener('click', (event) => {
+  event.preventDefault();
+
+  const form = document.getElementById('cust-lending-form');
+
+  if (form.checkValidity()) {
+    const formData = new FormData(form);
+    formData.append('custId', app.currentCustomer.id);
+
+    switch (app.lendings) {
+      case lendingsState.new:
+        addLending(convertInfoFormToJson(formData)).then(() => {
+          getLendings(app.currentCustomer.id, lendingsTable.order, lendingsTable.direction)
+            .then((lendings) => {
+              displayLendings(lendings);
+            });
+        });
+        break;
+
+      case lendingsState.edit:
+        updateLending(app.selectedLending.lendId, convertInfoFormToJson(formData)).then(() => {
+          getLendings(app.currentCustomer.id, lendingsTable.order, lendingsTable.direction)
+            .then((lendings) => {
+              displayLendings(lendings);
+            });
+          setInfoState(infoState.show);
+        });
+        break;
+
+      default:
+        break;
+    }
+    setLendingsState(lendingsState.show);
+  }
+});
+
+document.getElementById('lend-cancel-btn').addEventListener('click', () => {
+  setLendingsState(lendingsState.show);
+});
+
 /* Message box event handlers */
 
 msgDeleteUser.addEventListener('click', (event) => {
@@ -544,6 +787,29 @@ msgDeleteUser.addEventListener('click', (event) => {
 
     case 'msg-delete-cust-no':
       displayCustDeleteMsg(false);
+      break;
+
+    default:
+      break;
+  }
+});
+
+document.getElementById('msg-delete-lending').addEventListener('click', (event) => {
+  const { target } = event;
+
+  switch (target.id) {
+    case 'msg-delete-lend-yes':
+      deleteLending(app.selectedLending.lendId).then(() => {
+        getLendings(app.currentCustomer.id, lendingsTable.order, lendingsTable.direction)
+          .then((lendings) => {
+            displayLendings(lendings);
+          });
+      });
+      event.currentTarget.style.display = 'none';
+      break;
+
+    case 'msg-delete-lend-no':
+      event.currentTarget.style.display = 'none';
       break;
 
     default:
