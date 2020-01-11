@@ -241,7 +241,7 @@
   </main>
 
   <footer>
-    <p class="text--dark">Copyright © Michel Fäh, Dario Romandini, Julian Vogt</p>
+    <p class="text--dark">Copyright © <?php echo date("Y"); ?> Michel Fäh, Dario Romandini, Julian Vogt</p>
   </footer>
 
   <div id="msg-delete-user" class="message-box">
