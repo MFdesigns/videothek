@@ -5,8 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="Michel Fäh, Dario Romandini, Julian Vogt">
   <meta name="description" content="Videothek Management Seite">
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/res/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/res/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/res/icons/favicon-16x16.png">
+  <link rel="manifest" href="/res/icons/site.webmanifest">
+  <link rel="mask-icon" href="/res/icons/safari-pinned-tab.svg" color="#2935ce">
+  <link rel="shortcut icon" href="/res/icons/favicon.ico">
+  <meta name="msapplication-TileColor" content="#2935ce">
+  <meta name="msapplication-config" content="/res/icons/browserconfig.xml">
+  <meta name="theme-color" content="#2935ce">
+  <!-- Title -->
   <title>Videothek | <?php echo $pageTitle; ?></title>
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/customer_style.css">
+  <!-- Scripts -->
   <script src="/js/customerScript.js" defer></script>
 </head>
 <body>
@@ -88,16 +101,16 @@
 
         <!-- Customer info action buttons -->
         <div id="info-action" class="section__action">
-          <button class="action-button text--dark" id="cust-edit-btn" type="button" disabled>
-            <img class="action-button__icon" src="/res/icons/edit_icon.svg" alt="Kunde editieren Icon">
+          <button class="action-button button text--dark" id="cust-edit-btn" type="button" disabled>
+            <img src="/res/icons/edit_icon.svg" alt="Kunde editieren Icon">
             Bearbeiten
           </button>
-          <button class="action-button text--dark" id="cust-delete-btn" type="button" disabled>
-            <img class="action-button__icon" src="/res/icons/delete_icon.svg" alt="Kunde löschen Icon">
+          <button class="action-button button text--dark" id="cust-delete-btn" type="button" disabled>
+            <img src="/res/icons/delete_icon.svg" alt="Kunde löschen Icon">
             Löschen
           </button>
-          <button class="action-button text--dark" id="cust-add-btn" type="button">
-            <img class="action-button__icon" src="/res/icons/add_icon.svg" alt="Kunde hinzufügen Icon">
+          <button class="action-button button text--dark" id="cust-add-btn" type="button">
+            <img src="/res/icons/add_icon.svg" alt="Kunde hinzufügen Icon">
             Neuer Kunde
           </button>
         </div>
@@ -165,12 +178,12 @@
           </div>
 
           <div id="info-context-action" class="info-form__action">
-            <button class="info-form__action-button text--dark" id="info-save-btn" type="submit">
-              <img src="/res/icons/save_icon.svg" alt="" class="info-form__action-button__icon">
+            <button class="info-form__action-button button text--dark" id="info-save-btn" type="submit">
+              <img src="/res/icons/save_icon.svg" alt="">
               Speichern
             </button>
-            <button class="info-form__action-button text--dark" id="info-cancel-btn" type="button">
-              <img src="/res/icons/cancel_icon.svg" alt="" class="info-form__action-button__icon">
+            <button class="info-form__action-button button text--dark" id="info-cancel-btn" type="button">
+              <img src="/res/icons/cancel_icon.svg" alt="">
               Abbrechen
             </button>
           </div>
@@ -186,16 +199,16 @@
 
         <!-- Customer info action buttons -->
         <div id="lend-action" class="section__action">
-          <button class="action-button text--dark" id="lend-edit-btn" type="button" disabled>
-            <img class="action-button__icon" src="/res/icons/edit_icon.svg" alt="Ausleihe editieren Icon">
+          <button class="action-button button text--dark" id="lend-edit-btn" type="button" disabled>
+            <img src="/res/icons/edit_icon.svg" alt="Ausleihe editieren Icon">
             Bearbeiten
           </button>
-          <button class="action-button text--dark" id="lend-delete-btn" type="button" disabled>
-            <img class="action-button__icon" src="/res/icons/delete_icon.svg" alt="Ausleihe löschen Icon">
+          <button class="action-button button text--dark" id="lend-delete-btn" type="button" disabled>
+            <img src="/res/icons/delete_icon.svg" alt="Ausleihe löschen Icon">
             Löschen
           </button>
-          <button class="action-button text--dark" id="lend-add-btn" type="button" disabled>
-            <img class="action-button__icon" src="/res/icons/add_icon.svg" alt="Ausleihe hinzufügen Icon">
+          <button class="action-button button text--dark" id="lend-add-btn" type="button" disabled>
+            <img src="/res/icons/add_icon.svg" alt="Ausleihe hinzufügen Icon">
             Neue Ausleihe
           </button>
         </div>
