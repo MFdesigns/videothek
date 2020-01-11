@@ -47,7 +47,7 @@
       <!-- Customer search -->
       <form id="cust-search" class="search">
         <label for="search__input" class="search__label title--dark">Suchen</label>
-        <input id="search__input" class="input" type="search" placeholder="z. B. Peter" required>
+        <input id="search__input" class="input" type="search" placeholder="z. B. Peter" autocomplete="off" spellcheck="false" required>
         <button id="cust-search-clear" class="icon-button" type="button">
           <img src="/res/icons/cancel_icon.svg" alt="Suche löschen Icon">
         </button>
