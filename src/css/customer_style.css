@@ -177,10 +177,11 @@ header {
 }
 
 main {
+  max-height: 100%;
   grid-area: main;
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: auto 1fr 1fr;
+  grid-template-columns: 1fr 65%;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
   "subheader  subheader"
   "list       info"
@@ -274,6 +275,10 @@ main {
 
 /* Table */
 
+.table-scroll {
+  overflow-y: scroll;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -298,6 +303,10 @@ main {
   background-color: var(--grey-color);
 }
 
+.tr-no-events {
+  pointer-events: none;
+}
+
 /* Table head rounded corners */
 
 .table thead tr > th:first-child {
@@ -320,7 +329,6 @@ tbody tr:nth-child(odd) {
   user-select: none;
 }
 .table td {
-  text-align: start;
   font-family: "text-regular";
   font-size: 16px;
 }

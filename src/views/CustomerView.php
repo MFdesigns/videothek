@@ -60,22 +60,24 @@
     <div class="section customer-list">
       <h3 class="section__title title--dark">Liste</h3>
       <div class="section__content">
-        <table id="customer-list-table" class="table">
-          <thead>
-            <tr>
-              <th class="table__order table-align-end table__order--asc" data-order="id">Nr
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-              <th class="table__order" data-order="name">Vorname
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-              <th class="table__order" data-order="surname">Nachname
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-            </tr>
-          </thead>
-          <tbody id="customer-list-output"></tbody>
-        </table>
+        <div class="table-scroll">
+          <table id="customer-list-table" class="table">
+            <thead>
+              <tr>
+                <th class="table__order table-align-end table__order--asc" data-order="id">Nr
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+                <th class="table__order" data-order="name">Vorname
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+                <th class="table__order" data-order="surname">Nachname
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+              </tr>
+            </thead>
+            <tbody id="customer-list-output"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -201,24 +203,26 @@
 
       <!-- Customer lendings content -->
       <div class="section__content">
-        <table id="customer-lendings-table" class="table">
-          <thead>
-            <tr>
-              <th class="table__order table-align-end table__order--asc" data-order="vidId">VidNr
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-              <th class="table__order" data-order="title">Titel
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-              <th class="table__order" data-order="from">Von
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-              <th class="table__order" data-order="until">Bis
-                <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
-              </th>
-            </tr>
-          </thead>
-          <tbody id="customer-lendings-output"></tbody>
+        <div class="table-scroll">
+          <table id="customer-lendings-table" class="table">
+            <thead>
+              <tr>
+                <th class="table__order table-align-end table__order--asc" data-order="vidId">VidNr
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+                <th class="table__order" data-order="title">Titel
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+                <th class="table__order" data-order="from">Von
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+                <th class="table__order" data-order="until">Bis
+                  <img src="/res/icons/table_order_icon.svg" alt="" class="order__icon">
+                </th>
+              </tr>
+            </thead>
+            <tbody id="customer-lendings-output"></tbody>
+        </div>
         </table>
 
         <div class="customer-lending-overlay">
@@ -267,14 +271,14 @@
   </div>
 
   <template id="cust-list-search-no-result">
-    <tr class="">
+    <tr class="tr-no-events">
       <td colspan="3">Die Suche ergab keine Treffer.</td>
     </tr>
   </template>
 
   <template id="cust-list-item">
     <tr data-href="" data-id="">
-      <td></td>
+      <td class="table-align-end"></td>
       <td></td>
       <td></td>
     </tr>
@@ -282,7 +286,7 @@
 
   <template id="cust-lendings-item">
     <tr data-id="">
-      <td></td>
+      <td class="table-align-end"></td>
       <td></td>
       <td></td>
       <td></td>
