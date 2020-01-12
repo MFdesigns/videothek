@@ -34,7 +34,7 @@ CREATE TABLE TCustomers (
     CustName VARCHAR(128),
     CustSurname VARCHAR(128),
     CustBirthday DATE,
-    CustPhoneNumber INT,
+    CustPhoneNumber VARCHAR(10),
     CustStreet VARCHAR(128),
     CustStreetNumber VARCHAR(16),
     CustDeleted BOOL DEFAULT false,
@@ -47,7 +47,7 @@ CREATE TABLE TLendings (
     LendFrom DATE,
     LendUntil DATE,
     LendDeleted BOOL,
-    VidNumber INT,
+    VidNumber INT DEFAULT false,
     CustId INT,
     PRIMARY KEY (LendId)
 );

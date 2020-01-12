@@ -395,37 +395,20 @@ tbody tr:nth-child(odd) {
 
 .info-form__inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 120px 1fr 120px 1fr;
   grid-template-rows: repeat(6, auto);
-  grid-template-areas:
-  "id         street"
-  "title      street-number"
-  "name       onrp"
-  "surname    city"
-  "birthday   ."
-  "phone      ."
-  ;
   row-gap: 10px;
   column-gap: 10px;
-  width: 100%;
-}
-
-.info-form__item {
-  display: flex;
-  flex-direction: row;
   align-items: center;
 }
 
-.info-form__item > label {
-  width: 130px;
-}
-
 .info-form__input {
+  width: 100%;
+  min-width: 0;
   padding: 5px 10px 5px 10px;
   background-color: white;
   border: 1px solid var(--grey-color);
   border-radius: 5px;
-  width: auto;
 }
 .info-form__input:hover:disabled {
   cursor: default;
@@ -438,36 +421,107 @@ tbody tr:nth-child(odd) {
 }
 
 /* All customer info inputs */
-.cust-id {
-  grid-area: id;
+#cust-id-label {
+  grid-column: 1;
+  grid-row: 1;
 }
-.cust-title {
-  grid-area: title;
+#cust-id-input {
+  grid-column: 2;
+  grid-row: 1;
 }
-.cust-name {
-  grid-area: name;
+
+#cust-title-label {
+  grid-column: 1;
+  grid-row: 2;
 }
-.cust-surname {
-  grid-area: surname;
+#cust-title-input {
+  grid-column: 2;
+  grid-row: 2;
 }
-.cust-birthday {
-  grid-area: birthday;
+
+#cust-name-label {
+  grid-column: 1;
+  grid-row: 3;
 }
-.cust-phone {
-  grid-area: phone;
+#cust-name-input {
+  grid-column: 2;
+  grid-row: 3;
 }
-.cust-street {
-  grid-area: street;
+
+#cust-surname-label {
+  grid-column: 1;
+  grid-row: 4;
 }
-.cust-street-number {
-  grid-area: street-number;
+#cust-surname-input {
+  grid-column: 2;
+  grid-row: 4;
 }
-.cust-onrp {
-  grid-area: onrp;
+
+#cust-birthday-label {
+  grid-column: 1;
+  grid-row: 5;
 }
-.cust-city {
-  grid-area: city;
+#cust-birthday-input {
+  grid-column: 2;
+  grid-row: 5;
 }
+
+#cust-phone-label {
+  grid-column: 1;
+  grid-row: 6;
+}
+#cust-phone-input {
+  grid-column: 2;
+  grid-row: 6;
+}
+
+#cust-onrp-label {
+  grid-column: 3;
+  grid-row: 1;
+}
+#cust-onrp-input {
+  grid-column: 4;
+  grid-row: 1;
+}
+
+#cust-plz-label {
+  grid-column: 3;
+  grid-row: 2;
+}
+#plz-search {
+  display: flex;
+  flex-direction: row;
+  grid-column: 4;
+  grid-row: 2;
+}
+
+#cust-city-label {
+  grid-column: 3;
+  grid-row: 3;
+}
+#cust-city-input {
+  grid-column: 4;
+  grid-row: 3;
+}
+
+#cust-street-label {
+  grid-column: 3;
+  grid-row: 4;
+}
+#cust-street-input {
+  grid-column: 4;
+  grid-row: 4;
+}
+
+#cust-street-number-label {
+  grid-column: 3;
+  grid-row: 5;
+}
+#cust-street-number-input {
+  grid-column: 4;
+  grid-row: 5;
+}
+
 
 .info-form__action {
   visibility: hidden;
@@ -494,8 +548,24 @@ tbody tr:nth-child(odd) {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: var(--grey-color);
+  background-color: var(--not-quite-white);
   border-radius: 5px;
+  padding: 20px;
+}
+
+#cust-lending-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, auto);
+  row-gap: 10px;
+  column-gap: 10px;
+  margin: 20px 0 0 0;
+}
+
+.cust-lending-form__actions {
+  justify-self: end;
+  grid-column: 2;
+  grid-row: 4;
 }
 
 /* Footer */

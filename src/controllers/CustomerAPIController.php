@@ -176,6 +176,7 @@ class CustomerAPIController extends APIController {
     $customer["street"] = $result["CustStreet"];
     $customer["streetNumber"] = $result["CustStreetNumber"];
     $customer["onrp"] = $result["PlaceONRP"];
+    $customer["plz"] = $result["PlacePLZ"];
     $customer["city"] = $result["PlaceCity"];
     $customer["href"] = $href;
 
@@ -198,6 +199,7 @@ class CustomerAPIController extends APIController {
       isset($data["birthday"]) &&
       isset($data["phone"]) &&
       isset($data["street"]) &&
+      isset($data["onrp"]) &&
       isset($data["streetNumber"])
     ) {
       // Validate customer data
@@ -206,6 +208,7 @@ class CustomerAPIController extends APIController {
       $validBirthday = "/^[0-9]{4}-(0[1-9]{1}|1[0-2]{1})-(0[1-9]{1}|1[0-9]{1}|2[0-9]{1}|3[01]{1})$/";
       $validPhone = "/^[0-9]{10}$/";
       $validStreetNumber = "/^[0-9]+[a-zA-Z]*$/";
+      $validONRP = "/^[1-9]{1}[0-9]{2,3}$/";
 
       if (
         preg_match($validTitle, $data["title"]) === 0 ||
@@ -214,6 +217,7 @@ class CustomerAPIController extends APIController {
         preg_match($validBirthday, $data["birthday"]) === 0 ||
         preg_match($validPhone, $data["phone"]) === 0 ||
         preg_match($validName, $data["street"]) === 0 ||
+        preg_match($validONRP, $data["onrp"]) === 0 ||
         preg_match($validStreetNumber, $data["streetNumber"]) === 0
       ) {
         return false;

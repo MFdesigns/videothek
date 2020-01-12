@@ -120,61 +120,60 @@
       <div class="section__content">
         <form id="cust-info-form" class="info-form" action="" data-href="">
           <div class="info-form__inputs">
+            <!-- Customer id -->
+            <label id="cust-id-label" class="text--dark" for="cust-id-input">KundenNr</label>
+            <input name="id" id="cust-id-input" class="info-form__input text--dark" type="text" autocomplete="off" readonly required>
 
-            <div class="cust-id info-form__item">
-              <!-- Customer ID -->
-              <label class="text--dark" for="cust-id__input">KundenNr</label>
-              <input name="id" id="cust-id__input" class="info-form__input text--dark" type="text" autocomplete="off" readonly required>
+            <!-- Title -->
+            <label id="cust-title-label" class="text--dark" for="cust-title-input">Anrede</label>
+            <select name="title" id="cust-title-input" class="info-form__input text--dark cust-info-item-editable" disabled required>
+              <option value="" selected>-</option>
+              <option value="Frau">Frau</option>
+              <option value="Herr">Herr</option>
+            </select>
+
+            <!-- Name -->
+            <label id="cust-name-label" class="text--dark" for="cust-name-input">Vorname</label>
+            <input name="name" id="cust-name-input" class="info-form__input text--dark cust-info-item-editable" type="text" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
+
+            <!-- Surname -->
+            <label id="cust-surname-label" class="text--dark" for="cust-surname-input">Nachname</label>
+            <input name="surname" id="cust-surname-input" class="info-form__input text--dark cust-info-item-editable" type="text" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
+
+            <!-- birthday -->
+            <label id="cust-birthday-label" class="text--dark" for="cust-birthdaylinput">Geburtstag</label>
+            <input name="birthday" id="cust-birthday-input" class="info-form__input text--dark cust-info-item-editable" type="date" autocomplete="off" readonly required>
+
+            <!-- phone -->
+            <label id="cust-phone-label" class="text--dark" for="cust-phone-input">Telefon</label>
+            <input name="phone" id="cust-phone-input" class="info-form__input text--dark cust-info-item-editable" type="text" autocomplete="off" title="Darf nur aus Zahlen bestehen und 10 Zeichen lang sein" pattern="^[\d]{10}$" readonly required>
+
+            <!-- ONRP -->
+            <label id="cust-onrp-label" class="text--dark" for="cust-onrp-input">ONRP</label>
+            <input name="onrp" id="cust-onrp-input" type="text" class="info-form__input text--dark" autocomplete="off" readonly required>
+
+            <!-- PLZ -->
+            <label id="cust-plz-label" class="text--dark" for="cust-plz-input">PLZ</label>
+            <div id="plz-search">
+              <input id="cust-plz-input" type="text" class="info-form__input text--dark cust-info-item-editable" autocomplete="off" readonly required>
+              <button type="button" id="plz-search-btn" class="icon-button">
+                <img src="/res/icons/search_icon.svg" alt="Kunden durchsuchen Icon">
+              </button>
             </div>
-            <div class="cust-title info-form__item">
-              <!-- Customer title -->
-              <label class="text--dark" for="cust-title__input">Anrede</label>
-              <select name="title" id="cust-title__input" class="info-form__input text--dark cust-info-item-editable" disabled required>
-                <option value="" selected>-</option>
-                <option value="Frau">Frau</option>
-                <option value="Herr">Herr</option>
-              </select>
-            </div>
-            <div class="cust-name info-form__item">
-              <!-- Customer name -->
-              <label class="text--dark" for="cust-name__input">Vorname</label>
-              <input name="name" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-name__input" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
-            </div>
-            <div class="cust-surname info-form__item">
-              <!-- Customer surname -->
-              <label class="text--dark" for="cust-surname__input">Nachname</label>
-              <input name="surname" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-surname__input" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
-            </div>
-            <div class="cust-birthday info-form__item">
-              <!-- Customer birthday -->
-              <label class="text--dark" for="cust-birthday__input">Geburtstag</label>
-              <input name="birthday" class="info-form__input text--dark cust-info-item-editable" type="date" id="cust-birthday__input" autocomplete="off" readonly required>
-            </div>
-            <div class="cust-phone info-form__item">
-              <!-- Customer phone -->
-              <label class="text--dark" for="cust-phone__input">Telefon</label>
-              <input name="phone" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-phone__input" autocomplete="off" title="Darf nur aus Zahlen bestehen und 10 Zeichen lang sein" pattern="^[\d]{10}$" readonly required>
-            </div>
-            <div class="cust-street info-form__item">
-              <!-- Customer street -->
-              <label class="text--dark" for="cust-street__input">Strasse</label>
-              <input name="street" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-street__input" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
-            </div>
-            <div class="cust-street-number info-form__item">
-              <!-- Customer street number -->
-              <label class="text--dark" for="cust-street-number__input">Strassenummer</label>
-              <input name="streetNumber" class="info-form__input text--dark cust-info-item-editable" type="text" id="cust-street-number__input" autocomplete="off" title="Muss mit einer Zahl beginnen, eventuell gefolgt von Buchstaben" pattern="^[\d]+[a-zA-Z]*$" readonly required>
-            </div>
-            <div class="cust-onrp info-form__item">
-              <!-- Customer ONRP -->
-              <label class="text--dark" for="cust-onrp__input">ONRP</label>
-              <input name="onrp" type="text" id="cust-onrp__input" class="info-form__input text--dark" autocomplete="off" readonly required>
-            </div>
-            <div class="cust-city info-form__item">
-              <!-- Customer city -->
-              <label class="text--dark" for="cust-city__input">Stadt</label>
-              <input name="city" type="text" id="cust-city__input" class="info-form__input text--dark" autocomplete="off" readonly required>
-            </div>
+
+            <!-- City -->
+            <label id="cust-city-label" class="text--dark" for="cust-city-input">Stadt</label>
+            <select id="cust-city-input" class="info-form__input text--dark cust-info-item-editable" disabled required>
+              <option value="" selected>-</option>
+            </select>
+
+            <!-- Street -->
+            <label id="cust-street-label" class="text--dark" for="cust-street-input">Strasse</label>
+            <input name="street" id="cust-street-input" class="info-form__input text--dark cust-info-item-editable" type="text" autocomplete="off" title="Darf nur aus Buchstaben bestehen und länger als 2 Zeichen sein" pattern="^[^\d]{2,}$" readonly required>
+
+            <!-- Street number -->
+            <label id="cust-street-number-label" class="text--dark" for="cust-street-number-input">Strassenummer</label>
+            <input name="streetNumber" id="cust-street-number-input" class="info-form__input text--dark cust-info-item-editable" type="text" autocomplete="off" title="Muss mit einer Zahl beginnen, eventuell gefolgt von Buchstaben" pattern="^[\d]+[a-zA-Z]*$" readonly required>
           </div>
 
           <div id="info-context-action" class="info-form__action">
@@ -239,18 +238,26 @@
         </table>
 
         <div class="customer-lending-overlay">
+          <h2 class="title--dark">Neue Ausleihe hinzufügen</h2>
           <form id="cust-lending-form">
-            <h2>Neue Ausleihe hinzufügen</h2>
 
-            <label for="lend-vidId">VideoNr</label>
-            <input id="lend-vidId" name="vidId" type="text" pattern="^[0-9]+$" required>
-            <label for="lend-from">Ausleihdatum</label>
-            <input id="lend-from" name="from" type="date" required>
-            <label for="lend-until">Rückgabedatum</label>
-            <input id="lend-until" name="until" type="date">
+            <label for="lend-vidId" class="text--dark">VideoNr</label>
+            <input id="lend-vidId" class="input text--dark" name="vidId" type="text" pattern="^[0-9]+$" required>
+            <label for="lend-from" class="text--dark">Ausleihdatum</label>
+            <input id="lend-from" class="input text--dark"name="from" type="date" required>
+            <label for="lend-until" class="text--dark">Rückgabedatum</label>
+            <input id="lend-until" class="input text--dark" name="until" type="date">
 
-            <button type="submit" id="lend-save-btn">Speichern</button>
-            <button type="button" id="lend-cancel-btn">Abbrechen</button>
+            <div class="cust-lending-form__actions">
+              <button type="submit" id="lend-save-btn" class="icon-button text--dark">
+                <img src="/res/icons/save_icon.svg" alt="Ausleihe speichern Icon">
+                Speichern
+              </button>
+              <button type="button" id="lend-cancel-btn" class="icon-button text--dark">
+                <img src="/res/icons/cancel_icon.svg" alt="Ausleihe abbrechen Icon">
+                Abbrechen
+              </button>
+            </div>
           </form>
         </div>
       </div>

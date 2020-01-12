@@ -33,7 +33,11 @@ class CustomerModel {
    * @return PDOStatement
    */
   function search($keyword, $orderBy = "CustId", $direction = "ASC") {
-    $sql = "SELECT CustId, CustName, CustSurname FROM TCustomers WHERE CustDeleted = false AND (CustId LIKE '$keyword' OR CustName LIKE '%$keyword%' OR CustSurname LIKE '%$keyword%') ORDER BY $orderBy $direction";
+    $sql = "SELECT CustId, CustName, CustSurname
+            FROM TCustomers
+            WHERE CustDeleted = false
+            AND (CustId LIKE '$keyword' OR CustName LIKE '%$keyword%' OR CustSurname LIKE '%$keyword%')
+            ORDER BY $orderBy $direction";
     $result = $this->conn->query($sql);
     return $result;
   }
@@ -45,7 +49,9 @@ class CustomerModel {
    * @return string[]
    */
   function getById($custId) {
-    $sql = "SELECT CustId, CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, TPlaces.PlaceONRP, PlaceCity FROM TCustomers, TPlaces WHERE TCustomers.PlaceONRP = TPlaces.PlaceONRP AND CustId = $custId AND CustDeleted = false";
+    $sql = "SELECT CustId, CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, TPlaces.PlaceONRP, PlaceCity, PlacePLZ
+    FROM TCustomers, TPlaces
+    WHERE TCustomers.PlaceONRP = TPlaces.PlaceONRP AND CustId = $custId AND CustDeleted = false";
     $result = $this->conn->query($sql);
     return $result->fetch(PDO::FETCH_ASSOC);
   }
@@ -58,7 +64,16 @@ class CustomerModel {
    * @return PDOStatement
    */
   function updateById($id, $data) {
-    $sql = "UPDATE TCustomers SET CustTitle='" . $data["title"] . "', CustName='" . $data["name"] . "', CustSurname='" . $data["surname"] . "', CustBirthday='" . $data["birthday"] . "', CustPhoneNumber='" . $data["phone"] . "', CustStreet='" . $data["street"] . "', CustStreetNumber='" . $data["streetNumber"] . "' WHERE CustId=$id";
+    $sql = "UPDATE TCustomers
+            SET CustTitle='" . $data["title"] . "',
+            CustName='" . $data["name"] . "',
+            CustSurname='" . $data["surname"] . "',
+            CustBirthday='" . $data["birthday"] . "',
+            CustPhoneNumber='" . $data["phone"] . "',
+            CustStreet='" . $data["street"] . "',
+            PlaceONRP=" . $data["onrp"] . ",
+            CustStreetNumber='" . $data["streetNumber"] . "'
+            WHERE CustId=$id";
     $result = $this->conn->query($sql);
     return $result;
   }

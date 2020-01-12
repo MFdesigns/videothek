@@ -19,16 +19,17 @@ const custInfoContextAction = document.getElementById('info-context-action');
 const custInfoForm = document.getElementById('cust-info-form');
 
 // Customer infos input fields
-const custIdInput = document.querySelector('.cust-id .info-form__input');
-const custTitleInput = document.querySelector('.cust-title .info-form__input');
-const custNameInput = document.querySelector('.cust-name .info-form__input');
-const custSurnameInput = document.querySelector('.cust-surname .info-form__input');
-const custBirthdayInput = document.querySelector('.cust-birthday .info-form__input');
-const custPhoneInput = document.querySelector('.cust-phone .info-form__input');
-const custStreetInput = document.querySelector('.cust-street .info-form__input');
-const custStreetNumberInput = document.querySelector('.cust-street-number .info-form__input');
-const custONRPInput = document.querySelector('.cust-onrp .info-form__input');
-const custCityInput = document.querySelector('.cust-city .info-form__input');
+const custIdInput = document.getElementById('cust-id-input');
+const custTitleInput = document.getElementById('cust-title-input');
+const custNameInput = document.getElementById('cust-name-input');
+const custSurnameInput = document.getElementById('cust-surname-input');
+const custBirthdayInput = document.getElementById('cust-birthday-input');
+const custPhoneInput = document.getElementById('cust-phone-input');
+const custStreetInput = document.getElementById('cust-street-input');
+const custStreetNumberInput = document.getElementById('cust-street-number-input');
+const custONRPInput = document.getElementById('cust-onrp-input');
+const custPLZInput = document.getElementById('cust-plz-input');
+const custCityInput = document.getElementById('cust-city-input');
 
 // Customer info editable input fields
 const custInfoEditFields = document.getElementsByClassName('cust-info-item-editable');
@@ -178,6 +179,12 @@ function setTableOrder(table, th, stateData) {
   }
 }
 
+async function getPlacesByPLZ(plz) {
+  const request = await fetch(`${apiRoot}/places/plz/${plz}`, { method: 'GET' });
+  const response = await request.json();
+  return response;
+}
+
 /**
  * Fetches customer info of selected customer URL
  *
@@ -185,9 +192,13 @@ function setTableOrder(table, th, stateData) {
  * @returns {object} customer data
  */
 async function getCustomerInfo(apiURL) {
-  const request = await fetch(apiURL, { method: 'GET' });
-  const response = await request.json();
-  return response;
+  // Get general info
+  const customerRequest = await fetch(apiURL, { method: 'GET' });
+  const customer = await customerRequest.json();
+  // Get place info
+  const places = await getPlacesByPLZ(customer.plz);
+  customer.places = places;
+  return customer;
 }
 
 /**
@@ -209,7 +220,21 @@ function displayCustomerInfo(data) {
   custStreetInput.value = data.street;
   custStreetNumberInput.value = data.streetNumber;
   custONRPInput.value = data.onrp;
-  custCityInput.value = data.city;
+  custPLZInput.value = data.plz;
+
+  custCityInput.innerHTML = '';
+  // City select
+  data.places.forEach((place) => {
+    const option = document.createElement('option');
+    option.value = place.onrp;
+    option.textContent = place.city;
+
+    if (place.onrp === data.onrp) {
+      option.selected = true;
+    }
+
+    custCityInput.appendChild(option);
+  });
 }
 
 /**
@@ -356,10 +381,8 @@ function clearCustomerForm() {
   custPhoneInput.value = '';
   custStreetInput.value = '';
   custStreetNumberInput.value = '';
-
-  // Dirty fix
-  custONRPInput.value = '4805';
-  custCityInput.value = 'Frauenfeld';
+  custONRPInput.value = '';
+  custCityInput.innerHTML = '';
 }
 
 function setInfoState(state) {
@@ -814,5 +837,38 @@ document.getElementById('msg-delete-lending').addEventListener('click', (event) 
 
     default:
       break;
+  }
+});
+
+document.getElementById('plz-search-btn').addEventListener('click', async () => {
+  const plzInput = custPLZInput.value;
+
+  getPlacesByPLZ(plzInput).then((places) => {
+    custCityInput.innerHTML = '';
+
+    if (places.length <= 0) {
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.selected = true;
+      defaultOption.textContent = 'Keine Stadt gefunden';
+      custCityInput.appendChild(defaultOption);
+    } else {
+      custONRPInput.value = places[0].onrp;
+    }
+
+    places.forEach((place) => {
+      const option = document.createElement('option');
+      option.value = place.onrp;
+      option.textContent = place.city;
+
+      custCityInput.appendChild(option);
+    });
+  });
+});
+
+document.getElementById('cust-city-input').addEventListener('change', (event) => {
+  const onrp = event.target.value;
+  if (onrp !== '') {
+    custONRPInput.value = onrp;
   }
 });
