@@ -829,7 +829,6 @@ custInfoContextAction.addEventListener('click', (event) => {
                 // Show all lendings
                 document.getElementById('customer-lendings-output').style.visibility = 'visible';
               });
-
             });
 
             break;
