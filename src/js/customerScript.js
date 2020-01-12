@@ -769,6 +769,8 @@ document.getElementById('lend-action').addEventListener('click', (event) => {
       idInput.value = App.selectedLending.vidId;
       fromInput.value = App.selectedLending.from;
       untilInput.value = App.selectedLending.until;
+      // Set overlay title
+      document.querySelector('.customer-lending-overlay h2').textContent = 'Ausleihe bearbeiten';
       break;
 
     case 'lend-delete-btn':
@@ -776,6 +778,8 @@ document.getElementById('lend-action').addEventListener('click', (event) => {
       break;
 
     case 'lend-add-btn':
+      // Set overlay title
+      document.querySelector('.customer-lending-overlay h2').textContent = 'Neue Ausleihe hinzufügen';
       setLendingsState(LendingsStates.new);
       document.getElementById('customer-lendings-output').style.visibility = 'visible';
       break;
