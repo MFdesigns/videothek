@@ -4,6 +4,7 @@
 require_once ROOT . "/utils.php";
 require_once ROOT . "/controllers/CustomerAPIController.php";
 require_once ROOT . "/controllers/LendingAPIController.php";
+require_once ROOT . "/controllers/PlaceAPIController.php";
 
 class APIRouter {
   function __construct($url) {
@@ -26,6 +27,10 @@ class APIRouter {
 
         case "lendings":
           new LendingAPIController($url, $method);
+        break;
+
+        case "places":
+          new PlaceAPIController($url, $method);
         break;
 
         case "videos":

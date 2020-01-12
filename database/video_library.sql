@@ -7,7 +7,7 @@ CREATE USER IF NOT EXISTS 'VidLibUser' IDENTIFIED BY 'oV1OB%7d';
 GRANT SELECT, INSERT, UPDATE ON *.* TO 'VidLibUser';
 
 CREATE TABLE TVideos (
-    VidNumber INT NOT NULL AUTO_INCREMENT,
+    VidNumber INT UNSIGNED NOT NULL AUTO_INCREMENT,
     VidTitle VARCHAR(64),
     VidDuration TIME,
     VidCategory VARCHAR(64),
@@ -16,19 +16,20 @@ CREATE TABLE TVideos (
     VidPricePerDay FLOAT,
     VidPrice FLOAT,
     VidInventory INT,
-    VidDeleted BOOL,
+    VidDeleted BOOL DEFAULT false,
     PRIMARY KEY (VidNumber)
 );
 
 CREATE TABLE TPlaces (
-    PlaceONRP INT NOT NULL,
+    PlaceONRP INT UNSIGNED NOT NULL,
+    PlacePLZ VARCHAR(4),
     PlaceCity VARCHAR(64),
-    PlaceDeleted BOOL,
+    PlaceDeleted BOOL DEFAULT false,
     PRIMARY KEY (PlaceONRP)
 );
 
 CREATE TABLE TCustomers (
-    CustId INT NOT NULL AUTO_INCREMENT,
+    CustId INT UNSIGNED NOT NULL AUTO_INCREMENT,
     CustTitle ENUM('Herr', 'Frau'),
     CustName VARCHAR(128),
     CustSurname VARCHAR(128),
@@ -36,13 +37,13 @@ CREATE TABLE TCustomers (
     CustPhoneNumber INT,
     CustStreet VARCHAR(128),
     CustStreetNumber VARCHAR(16),
-    CustDeleted BOOL,
+    CustDeleted BOOL DEFAULT false,
     PlaceONRP INT,
     PRIMARY KEY (CustId)
 );
 
 CREATE TABLE TLendings (
-    LendId INT NOT NULL AUTO_INCREMENT,
+    LendId INT UNSIGNED NOT NULL AUTO_INCREMENT,
     LendFrom DATE,
     LendUntil DATE,
     LendDeleted BOOL,
