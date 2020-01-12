@@ -46,13 +46,14 @@ INSERT INTO TCustomers (CustTitle, CustName, CustSurname, CustBirthday, CustPhon
 
 -- Lending test data
 INSERT INTO TLendings (LendFrom, LendUntil, LendDeleted, VidNumber, CustId) VALUES
-  ('2019-12-26', '2019-12-28', false, 1, 1),
+  ('2019-12-26', NULL, false, 1, 1),
   ('2019-12-13', '2020-01-13', false, 9, 10),
   ('2019-11-27', '2019-12-26', false, 9, 2),
   ('2019-12-28', '2019-12-29', false, 2, 7),
-  ('2019-12-20', '2019-12-20', false, 5, 1),
+  ('2019-12-20', NULL, false, 5, 1),
   ('2019-10-12', '2019-10-17', false, 4, 6),
   ('2019-12-15', '2019-12-17', false, 2, 4),
-  ('2019-11-28', '2019-12-04', false, 3, 5),
+  ('2019-11-28', NULL, false, 3, 5),
   ('2019-12-02', '2019-12-12', false, 7, 1),
-  ('2019-12-18', '2019-12-19', false, 6, 2);
+  ('2019-12-18', '2019-12-19', false, 6, 2),
+  ('2019-12-18', NULL, false, 2, 9);

@@ -1,6 +1,6 @@
 <?php
 
-define("DEBUG", false);
+define("DEBUG", true);
 define("ROOT", dirname(__FILE__));
 
 if (DEBUG) {

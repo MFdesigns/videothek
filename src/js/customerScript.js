@@ -776,8 +776,8 @@ document.getElementById('lend-action').addEventListener('click', (event) => {
       break;
 
     case 'lend-add-btn':
-      document.getElementById('customer-lendings-output').visibility = 'visible';
       setLendingsState(LendingsStates.new);
+      document.getElementById('customer-lendings-output').style.visibility = 'visible';
       break;
 
     default:
@@ -788,9 +788,9 @@ document.getElementById('lend-action').addEventListener('click', (event) => {
 // Handles all customer info context buttons (Save, Cancel)
 custInfoContextAction.addEventListener('click', (event) => {
   event.preventDefault();
-  const button = event.target.closest('.info-form__action-button').id;
+  const button = event.target.closest('.info-form__action-button');
 
-  switch (button) {
+  switch (button.id) {
     case 'info-save-btn':
 
       if (custInfoForm.checkValidity()) {
@@ -801,7 +801,9 @@ custInfoContextAction.addEventListener('click', (event) => {
           case InfoStates.edit:
             updateCustomer(formJSON).then(() => {
               getCustomerInfo(custInfoForm.dataset.href).then((customer) => {
+                App.selectedCustomer = customer;
                 setInfoState(InfoStates.show);
+                setLendingsState(LendingsStates.show);
                 displayCustomerInfo(customer);
                 // Update customer list
                 displayCustomerList();
@@ -814,13 +816,16 @@ custInfoContextAction.addEventListener('click', (event) => {
               setInfoState(InfoStates.show);
 
               getCustomerInfo(customerHref.href).then((customer) => {
+                App.selectedCustomer = customer;
                 displayCustomerInfo(customer);
+                // Update customer list and lendings
+                setLendingsState(LendingsStates.show);
+                displayCustomerList();
+                displayLendings();
+                // Show all lendings
+                document.getElementById('customer-lendings-output').style.visibility = 'visible';
               });
 
-              // Update customer list and lendings
-              setLendingsState(LendingsStates.show);
-              displayCustomerList();
-              displayLendings();
             });
 
             break;
