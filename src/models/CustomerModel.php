@@ -85,7 +85,7 @@ class CustomerModel {
    * @return PDOStatement
    */
   function create($data) {
-    $sql = "INSERT INTO TCustomers (CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, CustDeleted, PlaceONRP)
+    $sql = "INSERT INTO TCustomers (CustTitle, CustName, CustSurname, CustBirthday, CustPhoneNumber, CustStreet, CustStreetNumber, PlaceONRP, CustDeleted)
             VALUES ('" . $data["title"] . "',
             '" . $data["name"] . "',
             '" . $data["surname"] . "',
@@ -93,7 +93,8 @@ class CustomerModel {
             '" . $data["phone"] . "',
             '" . $data["street"] . "',
             '" . $data["streetNumber"] . "',
-             false, 4805)";
+            '" . $data["onrp"] . "',
+             false)";
     $result = $this->conn->query($sql);
     $id = $this->conn->lastInsertId();
 

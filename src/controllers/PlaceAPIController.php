@@ -27,6 +27,12 @@ class PlaceAPIController extends APIController {
     }
   }
 
+  /**
+   * Returns a list with all Places matching the PLZ
+   *
+   * @param int $plz
+   * @return void
+   */
   function getAllPlacesByPLZ($plz) {
     $result = $this->model->getAllByPLZ($plz);
 

@@ -12,8 +12,8 @@ class CustomerController {
     $pageTitle = self::$pageTitle;
     $customerList = $customerModel->getList("CustId", "asc");
 
+    // Return customer view
     include_once(ROOT . "/views/CustomerView.php");
-
   }
 }
 

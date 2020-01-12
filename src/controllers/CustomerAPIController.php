@@ -94,7 +94,11 @@ class CustomerAPIController extends APIController {
     ];
   }
 
-  // TODO!: Docs
+  /**
+   * Handles customer list request
+   *
+   * @return void
+   */
   function getCustomerList() {
     $orderParams = $this->validateOrderParams();
 
@@ -120,10 +124,13 @@ class CustomerAPIController extends APIController {
     parent::returnJSON($customers);
   }
 
-  // TODO!: Docs
+  /**
+   * Handles customer search request
+   *
+   * @return void
+   */
   function searchCustomers() {
-    $validKeyword = "/^[a-zA-ZÀ-ÿä-ü\w]+$/"; // TODO: Fix this!
-    if (isset($_GET["keyword"]) && preg_match($validKeyword, $_GET["keyword"])) {
+    if (isset($_GET["keyword"])) {
 
       $orderParams = $this->validateOrderParams();
 
@@ -253,8 +260,6 @@ class CustomerAPIController extends APIController {
 
     if(!$response) {
       panic(400);
-    } else {
-      panic(200); // TODO: This is not a panic!
     }
   }
 

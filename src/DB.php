@@ -1,5 +1,7 @@
 <?php
 
+require_once ROOT . "/utils.php";
+
 class DB {
   private static $host = "localhost";
   private static $user = "VidLibUser";
@@ -14,8 +16,7 @@ class DB {
       try {
         self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbname . ";charset=utf8", self::$user, self::$password);
       } catch(PDOException $e) {
-        echo $e->getMessage();
-        die();
+        panic(500);
       }
     }
   }
@@ -31,17 +32,11 @@ class DB {
     return $result;
   }
 
-  public function prepare($sql) {
-    $prepStmt = self::$conn->prepare($sql);
-    return $prepStmt;
-  }
-
-  public function execute($prepStmt, $parameters) {
-    $prepStmt->execute($parameters);
-    $result = $prepStmt->fetchAll();
-    return $result;
-  }
-
+  /**
+   * Returns last inserted primary key
+   *
+   * @return int
+   */
   public function lastInsertId() {
     return self::$conn->lastInsertId();
   }

@@ -113,6 +113,12 @@ class LendingAPIController extends APIController {
     parent::returnJSON($lendings);
   }
 
+  /**
+   * Validates lending input
+   *
+   * @param [type] $data
+   * @return void
+   */
   function validateLendingsInput($data) {
     if (
       isset($data["vidId"]) &&
@@ -138,6 +144,11 @@ class LendingAPIController extends APIController {
     }
   }
 
+  /**
+   * Adds new lending to DB
+   *
+   * @return void
+   */
   function addLending() {
     $phpInput = file_get_contents("php://input");
     if (!$phpInput) {
@@ -146,24 +157,31 @@ class LendingAPIController extends APIController {
 
     $POST = json_decode($phpInput, true);
 
+    // Validate input
     $validInput = $this->validateLendingsInput($POST);
-
     if (!$validInput) {
       panic(400);
     }
 
+    // Add lending to DB
     $result = $this->lendingModel->add($POST);
-
     if (!$result["result"]) {
       panic(400);
     }
 
+    // Return new lending id and href
     $json["id"] = $result["id"];
     $json["href"] = parent::getProtocol() . "://" . $_SERVER["SERVER_NAME"] . "/api/lendings/" . $result["id"];
 
     parent::returnJSON($json);
   }
 
+  /**
+   * Updates a lending entity
+   *
+   * @param int $id
+   * @return void
+   */
   function updateLending($id) {
     $phpInput = file_get_contents("php://input");
     if (!$phpInput) {
@@ -183,9 +201,14 @@ class LendingAPIController extends APIController {
     }
   }
 
+  /**
+   * Deletes selected lending
+   *
+   * @param int $id
+   * @return void
+   */
   function deleteLending($id) {
     $result = $this->lendingModel->delete($id);
-
     if (!$result) {
       panic(400);
     }

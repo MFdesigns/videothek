@@ -136,6 +136,11 @@ body {
   ;
 }
 
+.body-no-scroll {
+  height: 100%;
+  overflow: hidden;
+}
+
 header {
   grid-area: header;
   background-color: var(--accent-color);
@@ -495,6 +500,10 @@ tbody tr:nth-child(odd) {
   grid-row: 2;
 }
 
+#plz-search-btn {
+  visibility: hidden;
+}
+
 #cust-city-label {
   grid-column: 3;
   grid-row: 3;
@@ -579,9 +588,9 @@ footer {
 
 /* Message box */
 
-.message-box {
+.msg-box {
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
@@ -596,8 +605,12 @@ footer {
   ;
 }
 
+.msg-box__content {
+  margin: 10px 0 20px 0;
+}
+
 @supports (backdrop-filter: blur()) or (-webkit-backdrop-filter: blur()) {
-  .message-box {
+  .msg-box {
     backdrop-filter: blur(20px) brightness(0.5);
     -webkit-backdrop-filter: blur(20px) brightness(0.5);
   }
@@ -618,7 +631,7 @@ footer {
   background-color: var(--warning-color);
 }
 
-.dialogue__buttons {
+.msg-box__buttons {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -626,14 +639,7 @@ footer {
   margin: 20px 0 0 0;
 }
 
-.dialogue-button {
-  padding: 10px 20px 10px 20px;
+.msg-box__button {
   background-color: white;
-  border-radius: 5px;
-  border: none;
   margin: 0 0 0 10px;
-  width: 120px;
-}
-.dialogue-button:hover {
-  cursor: pointer;
 }

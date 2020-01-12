@@ -1,6 +1,11 @@
 <?php
 
+define("DEBUG", false);
 define("ROOT", dirname(__FILE__));
+
+if (DEBUG) {
+  error_reporting(-1);
+}
 
 require_once "Router.php";
 

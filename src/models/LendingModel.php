@@ -10,6 +10,12 @@ class LendingModel {
     $this->conn = new DB();
   }
 
+  /**
+   * Adds new lending to DB
+   *
+   * @param [type] $data
+   * @return [type]
+   */
   function add($data) {
     $sql = "INSERT INTO TLendings (VidNumber, CustId, LendFrom, LendDeleted) VALUES ($data[vidId], $data[custId], '$data[from]', false);";
     $result = $this->conn->query($sql);
@@ -20,12 +26,25 @@ class LendingModel {
     ];
   }
 
+  /**
+   * Marks lending as deleted
+   *
+   * @param int $id
+   * @return PDOStatement
+   */
   function delete($id) {
     $sql = "UPDATE TLendings SET LendDeleted = true WHERE LendId = $id;";
     $result = $this->conn->query($sql);
     return $result;
   }
 
+  /**
+   * Updates lending entity
+   *
+   * @param int $id
+   * @param [type] $data
+   * @return PDOStatement
+   */
   function update($id, $data) {
     if (empty($data["until"])) {
       $sql = "UPDATE TLendings SET LendFrom='$data[from]', LendUntil=NULL, VidNumber = $data[vidId] WHERE LendId = $id";

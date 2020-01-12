@@ -122,7 +122,7 @@
           <div class="info-form__inputs">
             <!-- Customer id -->
             <label id="cust-id-label" class="text--dark" for="cust-id-input">KundenNr</label>
-            <input name="id" id="cust-id-input" class="info-form__input text--dark" type="text" autocomplete="off" readonly required>
+            <input name="id" id="cust-id-input" class="info-form__input text--dark" type="text" tabindex="-1" autocomplete="off" readonly required>
 
             <!-- Title -->
             <label id="cust-title-label" class="text--dark" for="cust-title-input">Anrede</label>
@@ -150,7 +150,7 @@
 
             <!-- ONRP -->
             <label id="cust-onrp-label" class="text--dark" for="cust-onrp-input">ONRP</label>
-            <input name="onrp" id="cust-onrp-input" type="text" class="info-form__input text--dark" autocomplete="off" readonly required>
+            <input name="onrp" id="cust-onrp-input" type="text" class="info-form__input text--dark" tabindex="-1" autocomplete="off" readonly required>
 
             <!-- PLZ -->
             <label id="cust-plz-label" class="text--dark" for="cust-plz-input">PLZ</label>
@@ -268,24 +268,19 @@
     <p class="text--dark">Copyright © <?php echo date("Y"); ?> Michel Fäh, Dario Romandini, Julian Vogt</p>
   </footer>
 
-  <div id="msg-delete-user" class="message-box">
+  <div class="msg-box">
     <div class="dialogue dialogue--error">
-      <h1 class="title--light">Wollen Sie den Kunden wirklich löschen?</h1>
-      <p id="msg-delete-user-info" class="text--light">Placeholder</p>
-      <div class="dialogue__buttons">
-        <button id="msg-delete-cust-yes" class="dialogue-button text--dark" type="button">Ja, löschen</button>
-        <button id="msg-delete-cust-no" class="dialogue-button text--dark" type="button">Abbrechen</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="msg-delete-lending" class="message-box">
-    <div class="dialogue dialogue--error">
-      <h1 class="title--light">Wollen Sie die Ausleihe wirklich löschen?</h1>
-      <p id="msg-delete-lend-info" class="text--light">Placeholder</p>
-      <div class="dialogue__buttons">
-        <button id="msg-delete-lend-yes" class="dialogue-button text--dark" type="button">Ja, löschen</button>
-        <button id="msg-delete-lend-no" class="dialogue-button text--dark" type="button">Abbrechen</button>
+      <h1 class="msg-box__title title--light"></h1>
+      <p class="msg-box__content text--light">Placeholder</p>
+      <div class="msg-box__buttons">
+        <button type="button" id="msg-yes-btn" class="msg-box__button icon-button text--dark">
+          <img src="/res/icons/delete_icon.svg" alt="Löschen bestätigen Icon">
+          Ja, löschen
+        </button>
+        <button type="button" id="msg-cancel-btn" class="msg-box__button icon-button text--dark">
+          <img src="/res/icons/cancel_icon.svg" alt="Löschen abbrechen Icon">
+          Abbrechen
+        </button>
       </div>
     </div>
   </div>
